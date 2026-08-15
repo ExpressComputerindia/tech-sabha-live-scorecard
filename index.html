@@ -1,190 +1,371 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Tech Sabha 2026 | Live Scoreboard</title>
 
 <style>
+*{box-sizing:border-box}
 
-* {
-    box-sizing: border-box;
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f4f6fa;
+color:#172033;
 }
 
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f5f7fb;
-    color: #172033;
+.header{
+background:#111827;
+color:white;
+text-align:center;
+padding:25px 15px;
 }
 
-/* HEADER */
+.header h1{margin:0;font-size:28px}
+.header p{margin:7px 0;color:#cbd5e1}
 
-.header {
-    background: #111827;
-    color: white;
-    padding: 28px 18px;
-    text-align: center;
+.wrap{
+max-width:850px;
+margin:auto;
+padding:18px 14px 40px;
 }
 
-.header h1 {
-    margin: 0;
-    font-size: 30px;
+.card{
+background:white;
+border-radius:16px;
+padding:18px;
+margin-bottom:18px;
+box-shadow:0 4px 15px rgba(0,0,0,.08);
 }
 
-.header p {
-    margin: 7px 0 0;
-    color: #cbd5e1;
+.card h2{margin:0 0 14px}
+
+.row{
+display:grid;
+grid-template-columns:50px 1fr auto;
+gap:12px;
+align-items:center;
+padding:13px 0;
+border-bottom:1px solid #eee;
 }
 
-/* MAIN */
+.row:last-child{border-bottom:0}
 
-.wrap {
-    max-width: 850px;
-    margin: auto;
-    padding: 20px 14px 40px;
+.rank{
+font-weight:bold;
+text-align:center;
+font-size:18px;
 }
 
-/* CARDS */
-
-.card {
-    background: white;
-    border-radius: 18px;
-    padding: 18px;
-    margin-bottom: 18px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+.name{
+font-weight:bold;
+font-size:17px;
 }
 
-.card h2 {
-    margin: 0 0 14px;
+.small{
+font-size:13px;
+color:#64748b;
+margin-top:3px;
 }
 
-/* SEARCH */
-
-.search {
-    display: flex;
-    gap: 9px;
+.points{
+font-size:19px;
+font-weight:bold;
+text-align:right;
 }
 
-input {
-    flex: 1;
-    padding: 13px 14px;
-    border: 1px solid #d5dbe5;
-    border-radius: 11px;
-    font-size: 16px;
-    outline: none;
+.dot{
+display:inline-block;
+width:10px;
+height:10px;
+border-radius:50%;
+margin-right:5px;
 }
 
-button {
-    border: 0;
-    border-radius: 11px;
-    padding: 0 19px;
-    background: #2563eb;
-    color: white;
-    font-weight: 700;
-    cursor: pointer;
+.search{
+display:flex;
+gap:8px;
 }
 
-/* TOP 5 */
-
-.person {
-    display: grid;
-    grid-template-columns: 60px 1fr auto;
-    gap: 12px;
-    align-items: center;
-    padding: 14px 0;
-    border-bottom: 1px solid #edf0f5;
+input{
+flex:1;
+padding:13px;
+border:1px solid #ccd3df;
+border-radius:10px;
+font-size:16px;
 }
 
-.person:last-child {
-    border-bottom: 0;
+button{
+padding:12px 18px;
+border:0;
+border-radius:10px;
+background:#2563eb;
+color:white;
+font-weight:bold;
 }
 
-.rank {
-    font-weight: 800;
-    font-size: 18px;
-    text-align: center;
+.result{
+margin-top:15px;
+padding:15px;
+background:#f8fafc;
+border-radius:12px;
 }
 
-.name {
-    font-weight: 800;
-    font-size: 17px;
+.error{
+margin-top:12px;
+padding:12px;
+background:#fee2e2;
+color:#991b1b;
+border-radius:10px;
 }
 
-.urn {
-    font-size: 13px;
-    color: #64748b;
-    margin-top: 3px;
+.updated{
+text-align:center;
+font-size:12px;
+color:#64748b;
+margin-top:10px;
 }
 
-.score {
-    font-size: 20px;
-    font-weight: 900;
-    text-align: right;
+@media(max-width:500px){
+.search{flex-direction:column}
+button{width:100%}
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<h1>🏆 TECH SABHA 2026</h1>
+<p>Live Public Scoreboard</p>
+</div>
+
+<div class="wrap">
+
+<div class="card">
+<h2>⚔️ Team Leaderboard</h2>
+<div id="teams">Loading...</div>
+</div>
+
+<div class="card">
+<h2>🏆 Top 5</h2>
+<div id="top5">Loading...</div>
+<div id="updated"></div>
+</div>
+
+<div class="card">
+<h2>🔎 Check Your Score</h2>
+
+<div class="search">
+<input id="urn" placeholder="Enter your URN e.g. TSJ026">
+<button onclick="searchURN()">CHECK</button>
+</div>
+
+<div id="result"></div>
+</div>
+
+</div>
+
+<script>
+
+const API="https://script.google.com/macros/s/AKfycbxiyaKhfpsuW0jx1eXrUcFRxixsbdp65LbOfDT6WtVUlLUeLDkUaNC01fK6iLF2jpeP/exec";
+
+let data=[];
+
+function colourDot(c){
+let colors={
+Red:"#ef4444",
+Green:"#22c55e",
+Blue:"#3b82f6",
+Orange:"#f97316",
+Yellow:"#eab308"
+};
+return '<span class="dot" style="background:'+(
+colors[c]||"#64748b"
+)+'"></span>';
 }
 
-/* TEAM */
+function load(){
 
-.team {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 5px;
-    font-size: 13px;
-    color: #475569;
+fetch(API+"?t="+Date.now())
+.then(r=>r.json())
+.then(json=>{
+
+data=json;
+
+showTeams();
+showTop5();
+
+document.getElementById("updated").innerText=
+"Last updated: "+new Date().toLocaleTimeString();
+
+})
+.catch(()=>{
+
+document.getElementById("teams").innerHTML=
+'<div class="error">Unable to load live scores.</div>';
+
+document.getElementById("top5").innerHTML=
+'<div class="error">Unable to load live scores.</div>';
+
+});
+
 }
 
-.dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    display: inline-block;
+function showTeams(){
+
+let totals={
+Red:0,
+Green:0,
+Blue:0,
+Orange:0,
+Yellow:0
+};
+
+data.forEach(p=>{
+
+let team=String(p.colour||"").trim();
+
+let score=Number(
+String(p.score||0).replace(/,/g,"")
+)||0;
+
+if(totals[team]!==undefined)
+totals[team]+=score;
+
+});
+
+let teams=Object.entries(totals)
+.sort((a,b)=>b[1]-a[1]);
+
+document.getElementById("teams").innerHTML=
+
+teams.map((t,i)=>{
+
+let medal=i==0?"🥇":i==1?"🥈":i==2?"🥉":"";
+
+return `
+<div class="row">
+
+<div class="rank">${medal}${i+1}</div>
+
+<div class="name">
+${colourDot(t[0])}${t[0]} Team
+</div>
+
+<div class="points">
+${t[1].toLocaleString()} pts
+</div>
+
+</div>
+`;
+
+}).join("");
+
 }
 
-/* TEAM LEADERBOARD */
+function showTop5(){
 
-.teamrow {
-    display: grid;
-    grid-template-columns: 55px 1fr auto;
-    gap: 12px;
-    align-items: center;
-    padding: 14px 0;
-    border-bottom: 1px solid #edf0f5;
+let top=data.slice(0,5);
+
+document.getElementById("top5").innerHTML=
+
+top.map((p,i)=>{
+
+let medal=i==0?"🥇":i==1?"🥈":i==2?"🥉":"#"+(i+1);
+
+return `
+<div class="row">
+
+<div class="rank">${medal}</div>
+
+<div>
+
+<div class="name">${p.name||""}</div>
+
+<div class="small">
+${p.urn||""} · ${colourDot(p.colour||"")}${p.colour||""}
+</div>
+
+</div>
+
+<div class="points">
+${p.score||0}
+</div>
+
+</div>
+`;
+
+}).join("");
+
 }
 
-.teamrow:last-child {
-    border-bottom: 0;
+function searchURN(){
+
+let urn=document.getElementById("urn")
+.value.trim().toUpperCase();
+
+if(!urn){
+
+document.getElementById("result").innerHTML=
+'<div class="error">Please enter your URN.</div>';
+
+return;
+
 }
 
-.teamrank {
-    font-weight: 800;
-    font-size: 18px;
-    text-align: center;
+let p=data.find(x=>
+String(x.urn||"").trim().toUpperCase()===urn
+);
+
+if(!p){
+
+document.getElementById("result").innerHTML=
+'<div class="error">URN not found. Please check your URN.</div>';
+
+return;
+
 }
 
-.teamname {
-    font-weight: 800;
-    font-size: 17px;
+document.getElementById("result").innerHTML=`
+
+<div class="result">
+
+<h2>${p.name||""}</h2>
+
+<div class="small">${p.urn||""}</div>
+
+<p>
+<strong>Rank:</strong> #${p.rank||"-"}
+</p>
+
+<p>
+<strong>Team:</strong>
+${colourDot(p.colour||"")}${p.colour||""}
+</p>
+
+<p style="font-size:22px">
+<strong>${p.score||0} Points</strong>
+</p>
+
+</div>
+`;
+
 }
 
-.teampoints {
-    font-size: 20px;
-    font-weight: 900;
-}
+document.getElementById("urn")
+.addEventListener("keydown",function(e){
 
-/* PERSONAL RESULT */
+if(e.key==="Enter") searchURN();
 
-.detail {
-    background: #f8fafc;
-    border-radius: 13px;
-    padding: 15px;
-    margin-top: 14px;
-}
+});
 
-.detail .big {
-    font-size: 30px;
-    font-weight:
+load();
+
+setInterval(load,10000);
+
 </script>
-    </body>
-    </html>
+
+</body>
+</html>
