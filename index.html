@@ -172,6 +172,7 @@ button{width:100%}
 const API="https://script.google.com/macros/s/AKfycbxiyaKhfpsuW0jx1eXrUcFRxixsbdp65LbOfDT6WtVUlLUeLDkUaNC01fK6iLF2jpeP/exec";
 
 let data=[];
+let teamData=[];
 
 function colourDot(c){
 let colors={
@@ -181,9 +182,10 @@ Blue:"#3b82f6",
 Orange:"#f97316",
 Yellow:"#eab308"
 };
-return '<span class="dot" style="background:'+(
-colors[c]||"#64748b"
-)+'"></span>';
+
+return '<span class="dot" style="background:'+
+(colors[c]||"#64748b")+
+'"></span>';
 }
 
 function load(){
@@ -192,7 +194,11 @@ fetch(API+"?t="+Date.now())
 .then(r=>r.json())
 .then(json=>{
 
-data=json;
+// Individual scoreboard data
+data=json.individuals;
+
+// Team scores from Dashboard K7:L11
+teamData=json.teams;
 
 showTeams();
 showTop5();
@@ -215,29 +221,7 @@ document.getElementById("top5").innerHTML=
 
 function showTeams(){
 
-let totals={
-Red:0,
-Green:0,
-Blue:0,
-Orange:0,
-Yellow:0
-};
-
-data.forEach(p=>{
-
-let team=String(p.colour||"").trim();
-
-let score=Number(
-String(p.score||0).replace(/,/g,"")
-)||0;
-
-if(totals[team]!==undefined)
-totals[team]+=score;
-
-});
-
-let teams=Object.entries(totals)
-.sort((a,b)=>b[1]-a[1]);
+let teams=teamData;
 
 document.getElementById("teams").innerHTML=
 
@@ -251,11 +235,11 @@ return `
 <div class="rank">${medal}${i+1}</div>
 
 <div class="name">
-${colourDot(t[0])}${t[0]} Team
+${colourDot(t.team)}${t.team} Team
 </div>
 
 <div class="points">
-${t[1].toLocaleString()} pts
+${t.score||0} pts
 </div>
 
 </div>
