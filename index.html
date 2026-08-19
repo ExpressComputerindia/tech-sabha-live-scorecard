@@ -273,7 +273,8 @@ body {
 
 .fastest {
 
-  border: 1px solid #e5e7eb;
+  border:
+    1px solid #e5e7eb;
 
   border-radius: 14px;
 
@@ -1136,9 +1137,9 @@ function renderTeams(teams) {
 
 
         /*
-         * ONLY 1st TEAM gets trophy.
+         * ONLY 1st TEAM GETS TROPHY.
          *
-         * 2nd and 3rd get NO medal.
+         * 2nd, 3rd, etc. get no medal.
          */
 
         const medal =
@@ -1178,13 +1179,6 @@ function renderTeams(teams) {
                 Team ${escapeHTML(
                   team.team
                 )}
-
-              </div>
-
-
-              <div class="sub">
-
-                Team
 
               </div>
 
@@ -1381,13 +1375,16 @@ function renderSessions(sessions) {
 
 
   /*
-   * LATEST SESSION FIRST.
+   * IMPORTANT:
+   *
+   * Latest session appears FIRST.
    *
    * Example:
    *
    * Session 23
    * Session 22
    * Session 21
+   * Session 20
    * ...
    * Session 3
    * Session 2
