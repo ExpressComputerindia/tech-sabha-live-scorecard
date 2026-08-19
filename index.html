@@ -260,6 +260,21 @@ body {
 
 
 /* =========================================================
+   TEAM MEDALS
+========================================================= */
+
+.team-medal {
+
+  margin-right: 7px;
+
+  font-size: 21px;
+
+  vertical-align: middle;
+
+}
+
+
+/* =========================================================
    FASTEST TO ENTER
 ========================================================= */
 
@@ -427,6 +442,10 @@ body {
 
 }
 
+
+/* =========================================================
+   CLOSE FINISHERS
+========================================================= */
 
 .close-section {
 
@@ -899,9 +918,11 @@ function loadScoreboard() {
   .then(function(response) {
 
     if (!response.ok) {
+
       throw new Error(
         "API error"
       );
+
     }
 
     return response.json();
@@ -1098,14 +1119,16 @@ function renderTeams(teams) {
   }
 
 
-  // API already gives correct rank order.
-  // We sort once more defensively.
+  /*
+   * Sort teams by score.
+   * Highest score first.
+   */
 
   teams.sort(function(a, b) {
 
     return (
-      numberValue(a.rank) -
-      numberValue(b.rank)
+      numberValue(b.score) -
+      numberValue(a.score)
     );
 
   });
@@ -1119,10 +1142,28 @@ function renderTeams(teams) {
           index + 1;
 
 
-        const trophy =
-          rank === 1
-            ? `<span class="trophy">🏆</span>`
-            : "";
+        /*
+         * Medal:
+         * 1st = Gold
+         * 2nd = Silver
+         * 3rd = Bronze
+         */
+
+        let medal = "";
+
+        if (rank === 1) {
+
+          medal = "🏆";
+
+        } else if (rank === 2) {
+
+          medal = "🥈";
+
+        } else if (rank === 3) {
+
+          medal = "🥉";
+
+        }
 
 
         return `
@@ -1143,9 +1184,13 @@ function renderTeams(teams) {
 
               <div class="name">
 
-                ${trophy}
+                ${
+                  medal
+                    ? `<span class="team-medal">${medal}</span>`
+                    : ""
+                }
 
-                ${escapeHTML(
+                Team ${escapeHTML(
                   team.team
                 )}
 
@@ -1202,7 +1247,9 @@ function renderIndividuals(individuals) {
   }
 
 
-  // Highest score first.
+  /*
+   * Highest score first.
+   */
 
   individuals.sort(function(a, b) {
 
@@ -1314,11 +1361,25 @@ function renderSessions(sessions) {
   }
 
 
+  /*
+   * IMPORTANT:
+   *
+   * Latest session first.
+   *
+   * 23
+   * 22
+   * 21
+   * ...
+   * 3
+   * 2
+   * 1
+   */
+
   sessions.sort(function(a, b) {
 
     return (
-      numberValue(a.session) -
-      numberValue(b.session)
+      numberValue(b.session) -
+      numberValue(a.session)
     );
 
   });
@@ -1452,6 +1513,7 @@ function renderSessions(sessions) {
 
               <br>
 
+
               ${
                 winner.team
                   ? `
@@ -1465,6 +1527,7 @@ function renderSessions(sessions) {
                   `
                   : ""
               }
+
 
               ${
                 winner.time
