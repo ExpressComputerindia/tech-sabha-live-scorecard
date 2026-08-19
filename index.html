@@ -23,8 +23,14 @@ html {
 }
 
 body {
+
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
   color: #172033;
 
   background:
@@ -44,12 +50,15 @@ body {
 .hero {
 
   position: relative;
+
   overflow: hidden;
 
   color: white;
+
   text-align: center;
 
-  padding: 45px 18px 40px;
+  padding:
+    45px 18px 40px;
 
   background:
     linear-gradient(
@@ -81,9 +90,11 @@ body {
 .hero-content {
 
   position: relative;
+
   z-index: 2;
 
   max-width: 1000px;
+
   margin: auto;
 }
 
@@ -114,7 +125,8 @@ body {
 
   max-width: 780px;
 
-  margin: 18px auto 0;
+  margin:
+    18px auto 0;
 
   color: #e2e8f0;
 
@@ -134,7 +146,8 @@ body {
 
   margin-top: 22px;
 
-  padding: 9px 17px;
+  padding:
+    9px 17px;
 
   border-radius: 999px;
 
@@ -179,6 +192,7 @@ body {
   50% {
     opacity: .35;
   }
+
 }
 
 
@@ -207,7 +221,9 @@ body {
 }
 
 .full {
-  grid-column: 1 / -1;
+
+  grid-column:
+    1 / -1;
 }
 
 
@@ -277,7 +293,8 @@ body {
 
   gap: 12px;
 
-  padding: 14px 10px;
+  padding:
+    14px 10px;
 
   border-bottom:
     1px solid
@@ -287,11 +304,14 @@ body {
 }
 
 .row:last-child {
+
   border-bottom: none;
 }
 
 .row:hover {
-  background: #f8fafc;
+
+  background:
+    #f8fafc;
 }
 
 .rank {
@@ -412,14 +432,27 @@ body {
 }
 
 .session-winner:last-child {
+
   border-bottom: none;
 }
 
 .winner-name {
+
   font-weight: 800;
 }
 
 .winner-urn {
+
+  display: block;
+
+  margin-top: 3px;
+
+  color: #64748b;
+
+  font-size: 12px;
+}
+
+.winner-team {
 
   display: block;
 
@@ -499,7 +532,9 @@ body {
 }
 
 .search-box button:hover {
-  background: #0b3c68;
+
+  background:
+    #0b3c68;
 }
 
 
@@ -565,11 +600,6 @@ body {
   color: #991b1b;
 }
 
-
-/* =========================================================
-   UPDATED
-   ========================================================= */
-
 .updated {
 
   margin-top: 20px;
@@ -580,11 +610,6 @@ body {
 
   font-size: 12px;
 }
-
-
-/* =========================================================
-   FOOTER
-   ========================================================= */
 
 .footer {
 
@@ -599,7 +624,7 @@ body {
 
 
 /* =========================================================
-   TABLET
+   RESPONSIVE
    ========================================================= */
 
 @media(max-width: 900px) {
@@ -609,40 +634,37 @@ body {
     grid-template-columns:
       repeat(2, minmax(0,1fr));
   }
+
 }
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
 
 @media(max-width: 700px) {
 
   .main-grid {
+
     grid-template-columns: 1fr;
   }
 
   .full {
+
     grid-column: auto;
   }
 
   .sessions {
+
     grid-template-columns: 1fr;
   }
 
   .search-box {
+
     flex-direction: column;
   }
 
   .search-box button {
+
     width: 100%;
   }
+
 }
-
-
-/* =========================================================
-   SMALL MOBILE
-   ========================================================= */
 
 @media(max-width: 450px) {
 
@@ -656,8 +678,10 @@ body {
   }
 
   .score {
+
     font-size: 16px;
   }
+
 }
 
 </style>
@@ -667,10 +691,6 @@ body {
 
 <body>
 
-
-<!-- =========================================================
-     HEADER
-     ========================================================= -->
 
 <header class="hero">
 
@@ -685,18 +705,13 @@ body {
     </div>
 
     <div class="headline">
-
       India Ascending From Digital Infrastructure
       to Intelligent Governance
-
     </div>
 
     <div class="live">
-
       <span class="live-dot"></span>
-
       LIVE SCORECARD
-
     </div>
 
   </div>
@@ -704,18 +719,14 @@ body {
 </header>
 
 
-<!-- =========================================================
-     CONTENT
-     ========================================================= -->
-
 <main class="container">
 
 <div class="main-grid">
 
 
-<!-- =========================================================
+<!-- =====================================================
      TEAM LEADERBOARD
-     ========================================================= -->
+     ===================================================== -->
 
 <section class="card">
 
@@ -738,9 +749,9 @@ body {
 </section>
 
 
-<!-- =========================================================
-     TOP 5 INDIVIDUALS
-     ========================================================= -->
+<!-- =====================================================
+     INDIVIDUAL TOP 5
+     ===================================================== -->
 
 <section class="card">
 
@@ -763,9 +774,9 @@ body {
 </section>
 
 
-<!-- =========================================================
+<!-- =====================================================
      SESSION WINNERS
-     ========================================================= -->
+     ===================================================== -->
 
 <section class="card full">
 
@@ -792,9 +803,9 @@ body {
 </section>
 
 
-<!-- =========================================================
-     URN SEARCH
-     ========================================================= -->
+<!-- =====================================================
+     SEARCH
+     ===================================================== -->
 
 <section class="card full">
 
@@ -810,15 +821,13 @@ body {
 
   </div>
 
-
   <div class="search-box">
 
     <input
       id="urn"
       type="text"
-      placeholder="Enter your URN e.g. TSJ001"
+      placeholder="Enter your URN e.g. TS001"
       autocomplete="off">
-
 
     <button
       onclick="searchURN()">
@@ -828,7 +837,6 @@ body {
     </button>
 
   </div>
-
 
   <div id="result"></div>
 
@@ -857,9 +865,9 @@ body {
 <script>
 
 
-/* =========================================================
-   YOUR NEW GOOGLE APPS SCRIPT WEB APP
-   ========================================================= */
+// =========================================================
+// YOUR NEW APPS SCRIPT URL
+// =========================================================
 
 const API =
 "https://script.google.com/macros/s/AKfycbzwwmgZ-p416-if5QORnTZLURHCLyX23qiDvcjMAKsyo54zNWWt4ilbFr1YgGxecBBeXw/exec";
@@ -868,9 +876,9 @@ const API =
 let allIndividuals = [];
 
 
-/* =========================================================
-   SECURITY
-   ========================================================= */
+// =========================================================
+// SECURITY
+// =========================================================
 
 function escapeHTML(value) {
 
@@ -885,19 +893,41 @@ function escapeHTML(value) {
     .replace(/"/g, "&quot;")
 
     .replace(/'/g, "&#039;");
+
 }
 
 
-/* =========================================================
-   LOAD DATA
-   ========================================================= */
+// =========================================================
+// NUMBER
+// =========================================================
+
+function numberValue(value) {
+
+  const n =
+    Number(
+      String(value || "")
+        .replace(/,/g, "")
+        .replace(/[^\d.-]/g, "")
+    );
+
+  return isNaN(n) ? 0 : n;
+
+}
+
+
+// =========================================================
+// LOAD
+// =========================================================
 
 function loadScoreboard() {
 
   fetch(
     API +
     "?t=" +
-    Date.now()
+    Date.now(),
+    {
+      cache: "no-store"
+    }
   )
 
   .then(function(response) {
@@ -935,13 +965,20 @@ function loadScoreboard() {
     );
 
 
+    const updated =
+      data.updatedAt
+        ? new Date(
+            data.updatedAt
+          ).toLocaleTimeString()
+        : new Date()
+            .toLocaleTimeString();
+
+
     document.getElementById(
       "updated"
     ).innerText =
-
       "Last updated: " +
-      new Date()
-        .toLocaleTimeString();
+      updated;
 
   })
 
@@ -956,7 +993,7 @@ function loadScoreboard() {
 
       `<div class="error">
         Unable to load team leaderboard.
-       </div>`;
+      </div>`;
 
 
     document.getElementById(
@@ -965,7 +1002,7 @@ function loadScoreboard() {
 
       `<div class="error">
         Unable to load individual leaderboard.
-       </div>`;
+      </div>`;
 
 
     document.getElementById(
@@ -974,16 +1011,16 @@ function loadScoreboard() {
 
       `<div class="error">
         Unable to load session winners.
-       </div>`;
+      </div>`;
 
   });
 
 }
 
 
-/* =========================================================
-   TEAM LEADERBOARD
-   ========================================================= */
+// =========================================================
+// TEAM LEADERBOARD
+// =========================================================
 
 function renderTeams(teams) {
 
@@ -996,102 +1033,146 @@ function renderTeams(teams) {
   if (!teams.length) {
 
     container.innerHTML =
-
       `<div class="error">
         No team scores available.
-       </div>`;
+      </div>`;
 
     return;
+
   }
 
 
+  // Remove duplicates again at frontend
+  const unique =
+    new Map();
+
+
+  teams.forEach(function(team) {
+
+    const key =
+      String(
+        team.team || ""
+      )
+      .trim()
+      .toLowerCase();
+
+
+    if (
+      key &&
+      !unique.has(key)
+    ) {
+
+      unique.set(
+        key,
+        team
+      );
+
+    }
+
+  });
+
+
+  teams =
+    Array.from(
+      unique.values()
+    );
+
+
+  // Rank 1 -> 2 -> 3 -> 4 -> 5
+
   teams.sort(function(a, b) {
 
-    return (
+    const ar =
+      parseInt(
+        String(a.rank || "")
+          .match(/\d+/)?.[0]
+      ) || 999;
 
-      (parseInt(a.rank) || 999) -
+    const br =
+      parseInt(
+        String(b.rank || "")
+          .match(/\d+/)?.[0]
+      ) || 999;
 
-      (parseInt(b.rank) || 999)
-
-    );
+    return ar - br;
 
   });
 
 
   container.innerHTML =
 
-    teams.map(function(team) {
+    teams
+      .slice(0, 5)
+      .map(function(team, index) {
 
-      const rank =
-        parseInt(team.rank) || 0;
-
-
-      const trophy =
-        rank === 1
-
-          ? `<span class="trophy">🏆</span>`
-
-          : "";
+        const displayRank =
+          index + 1;
 
 
-      return `
-
-        <div class="row">
-
-          <div
-            class="rank ${
-              rank === 1
-                ? "rank-one"
-                : ""
-            }">
-
-            ${rank}
-
-          </div>
+        const trophy =
+          displayRank === 1
+            ? `<span class="trophy">🏆</span>`
+            : "";
 
 
-          <div>
+        return `
 
-            <div class="name">
+          <div class="row">
 
-              ${trophy}
+            <div
+              class="rank ${
+                displayRank === 1
+                  ? "rank-one"
+                  : ""
+              }">
 
-              ${escapeHTML(
-                team.team
-              )}
+              ${displayRank}
 
             </div>
 
 
-            <div class="sub">
-              Team
+            <div>
+
+              <div class="name">
+
+                ${trophy}
+
+                ${escapeHTML(
+                  team.team
+                )}
+
+              </div>
+
+              <div class="sub">
+                Team
+              </div>
+
+            </div>
+
+
+            <div class="score">
+
+              ${numberValue(
+                team.score
+              ).toLocaleString()}
+
+              pts
+
             </div>
 
           </div>
 
+        `;
 
-          <div class="score">
-
-            ${Number(
-              team.score || 0
-            ).toLocaleString()}
-
-            pts
-
-          </div>
-
-        </div>
-
-      `;
-
-    }).join("");
+      })
+      .join("");
 
 }
 
 
-/* =========================================================
-   TOP 5 INDIVIDUALS
-   ========================================================= */
+// =========================================================
+// TOP 5 INDIVIDUALS
+// =========================================================
 
 function renderIndividuals(
   individuals
@@ -1106,26 +1187,44 @@ function renderIndividuals(
   if (!individuals.length) {
 
     container.innerHTML =
-
       `<div class="error">
         No individual scores available.
-       </div>`;
+      </div>`;
 
     return;
+
   }
 
 
-  individuals.sort(function(a, b) {
+  // IMPORTANT:
+  // Highest score first
 
-    return (
+  individuals.sort(
+    function(a, b) {
 
-      (parseInt(a.rank) || 999) -
+      const scoreA =
+        numberValue(a.score);
 
-      (parseInt(b.rank) || 999)
+      const scoreB =
+        numberValue(b.score);
 
-    );
 
-  });
+      if (
+        scoreB !== scoreA
+      ) {
+
+        return scoreB - scoreA;
+
+      }
+
+
+      return (
+        Number(a.rank || 999) -
+        Number(b.rank || 999)
+      );
+
+    }
+  );
 
 
   const top5 =
@@ -1134,83 +1233,83 @@ function renderIndividuals(
 
   container.innerHTML =
 
-    top5.map(function(person) {
+    top5
+      .map(function(person, index) {
 
-      const rank =
-        parseInt(person.rank) || 0;
-
-
-      const trophy =
-        rank === 1
-
-          ? `<span class="trophy">🏆</span>`
-
-          : "";
+        const displayRank =
+          index + 1;
 
 
-      return `
-
-        <div class="row">
-
-          <div
-            class="rank ${
-              rank === 1
-                ? "rank-one"
-                : ""
-            }">
-
-            ${rank}
-
-          </div>
+        const trophy =
+          displayRank === 1
+            ? `<span class="trophy">🏆</span>`
+            : "";
 
 
-          <div>
+        return `
 
-            <div class="name">
+          <div class="row">
 
-              ${trophy}
+            <div
+              class="rank ${
+                displayRank === 1
+                  ? "rank-one"
+                  : ""
+              }">
 
-              ${escapeHTML(
-                person.name
-              )}
+              ${displayRank}
 
             </div>
 
 
-            <div class="sub">
+            <div>
 
-              URN:
-              ${escapeHTML(
-                person.urn
-              )}
+              <div class="name">
+
+                ${trophy}
+
+                ${escapeHTML(
+                  person.name
+                )}
+
+              </div>
+
+
+              <div class="sub">
+
+                URN:
+                ${escapeHTML(
+                  person.urn
+                )}
+
+              </div>
+
+            </div>
+
+
+            <div class="score">
+
+              ${numberValue(
+                person.score
+              ).toLocaleString()}
+
+              pts
 
             </div>
 
           </div>
 
+        `;
 
-          <div class="score">
-
-            ${Number(
-              person.score || 0
-            ).toLocaleString()}
-
-            pts
-
-          </div>
-
-        </div>
-
-      `;
-
-    }).join("");
+      })
+      .join("");
 
 }
 
 
-/* =========================================================
-   ALL SESSION WINNERS
-   ========================================================= */
+// =========================================================
+// SESSION WINNERS
+// =========================================================
 
 function renderSessions(
   sessions
@@ -1225,113 +1324,143 @@ function renderSessions(
   if (!sessions.length) {
 
     container.innerHTML =
-
       `<div class="error">
         No session winners available.
-       </div>`;
+      </div>`;
 
     return;
+
   }
 
 
-  sessions.sort(function(a, b) {
+  sessions.sort(
+    function(a, b) {
 
-    return (
-      Number(a.session) -
-      Number(b.session)
-    );
+      return (
+        Number(a.session) -
+        Number(b.session)
+      );
 
-  });
+    }
+  );
 
 
   container.innerHTML =
 
-    sessions.map(function(session) {
+    sessions
+      .map(function(session) {
 
-      const winnersHTML =
+        const winners =
+          session.winners || [];
 
-        (session.winners || [])
-          .map(function(winner) {
 
-            return `
+        const winnersHTML =
+          winners
+            .map(function(winner) {
 
-              <div
-                class="session-winner">
+              return `
 
-                <div>
+                <div
+                  class="session-winner">
 
-                  <div
-                    class="winner-name">
+                  <div>
 
-                    🏆
-                    ${escapeHTML(
-                      winner.name
-                    )}
+                    <div
+                      class="winner-name">
+
+                      🏆
+                      ${escapeHTML(
+                        winner.name
+                      )}
+
+                    </div>
+
+
+                    <span
+                      class="winner-urn">
+
+                      URN:
+                      ${escapeHTML(
+                        winner.urn
+                      )}
+
+                    </span>
+
+
+                    ${
+                      winner.team
+                        ? `
+                          <span
+                            class="winner-team">
+
+                            Team:
+                            ${escapeHTML(
+                              winner.team
+                            )}
+
+                          </span>
+                        `
+                        : ""
+                    }
 
                   </div>
 
 
-                  <span
-                    class="winner-urn">
+                  <div
+                    class="winner-points">
 
-                    URN:
-                    ${escapeHTML(
-                      winner.urn
-                    )}
+                    ${numberValue(
+                      winner.points
+                    ).toLocaleString()}
 
-                  </span>
+                    pts
 
-                </div>
-
-
-                <div
-                  class="winner-points">
-
-                  ${Number(
-                    winner.points || 0
-                  ).toLocaleString()}
-
-                  pts
+                  </div>
 
                 </div>
 
-              </div>
+              `;
 
-            `;
-
-          })
-          .join("");
+            })
+            .join("");
 
 
-      return `
+        return `
 
-        <div class="session">
+          <div class="session">
 
-          <div
-            class="session-title">
+            <div
+              class="session-title">
 
-            Session
-            ${escapeHTML(
-              session.session
-            )}
+              Session
+              ${escapeHTML(
+                session.session
+              )}
+
+              ${
+                winners.length > 1
+                  ? " · Winners"
+                  : " · Winner"
+              }
+
+            </div>
+
+
+            ${winnersHTML}
 
           </div>
 
+        `;
 
-          ${winnersHTML}
-
-        </div>
-
-      `;
-
-    }).join("");
+      })
+      .join("");
 
 }
 
 
-/* =========================================================
-   SEARCH YOUR URN
-   ========================================================= */
+// =========================================================
+// SEARCH YOUR URN
+// =========================================================
 
 function searchURN() {
 
@@ -1341,16 +1470,16 @@ function searchURN() {
     );
 
 
-  const urn =
-    input.value
-      .trim()
-      .toUpperCase();
-
-
   const result =
     document.getElementById(
       "result"
     );
+
+
+  const urn =
+    input.value
+      .trim()
+      .toUpperCase();
 
 
   if (!urn) {
@@ -1358,12 +1487,11 @@ function searchURN() {
     result.innerHTML =
 
       `<div class="error">
-
         Please enter your URN.
-
-       </div>`;
+      </div>`;
 
     return;
+
   }
 
 
@@ -1391,13 +1519,15 @@ function searchURN() {
         <strong>
           ${escapeHTML(urn)}
         </strong>
+
         was not found.
 
         Please check your URN.
 
-       </div>`;
+      </div>`;
 
     return;
+
   }
 
 
@@ -1499,8 +1629,8 @@ function searchURN() {
 
       <div class="result-score">
 
-        ${Number(
-          person.score || 0
+        ${numberValue(
+          person.score
         ).toLocaleString()}
 
         Points
@@ -1514,9 +1644,9 @@ function searchURN() {
 }
 
 
-/* =========================================================
-   ENTER KEY FOR SEARCH
-   ========================================================= */
+// =========================================================
+// ENTER KEY
+// =========================================================
 
 document
   .getElementById("urn")
@@ -1536,17 +1666,16 @@ document
   );
 
 
-/* =========================================================
-   INITIAL LOAD
-   ========================================================= */
+// =========================================================
+// INITIAL LOAD
+// =========================================================
 
 loadScoreboard();
 
 
-/* =========================================================
-   AUTO REFRESH
-   Every 10 seconds
-   ========================================================= */
+// =========================================================
+// AUTO REFRESH
+// =========================================================
 
 setInterval(
   loadScoreboard,
@@ -1554,6 +1683,7 @@ setInterval(
 );
 
 </script>
+
 
 </body>
 
