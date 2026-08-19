@@ -250,20 +250,13 @@ body {
 }
 
 
-.trophy {
-
-  margin-right: 6px;
-
-  font-size: 20px;
-
-}
-
-
 /* =========================================================
-   TEAM MEDALS
+   MEDALS
 ========================================================= */
 
-.team-medal {
+.medal {
+
+  display: inline-block;
 
   margin-right: 7px;
 
@@ -1120,8 +1113,7 @@ function renderTeams(teams) {
 
 
   /*
-   * Sort teams by score.
-   * Highest score first.
+   * Sort by highest score first.
    */
 
   teams.sort(function(a, b) {
@@ -1135,7 +1127,8 @@ function renderTeams(teams) {
 
 
   container.innerHTML =
-    teams.slice(0, 10)
+    teams
+      .slice(0, 10)
       .map(function(team, index) {
 
         const rank =
@@ -1143,27 +1136,15 @@ function renderTeams(teams) {
 
 
         /*
-         * Medal:
-         * 1st = Gold
-         * 2nd = Silver
-         * 3rd = Bronze
+         * ONLY 1st TEAM gets trophy.
+         *
+         * 2nd and 3rd get NO medal.
          */
 
-        let medal = "";
-
-        if (rank === 1) {
-
-          medal = "🏆";
-
-        } else if (rank === 2) {
-
-          medal = "🥈";
-
-        } else if (rank === 3) {
-
-          medal = "🥉";
-
-        }
+        const medal =
+          rank === 1
+            ? "🏆"
+            : "";
 
 
         return `
@@ -1186,7 +1167,11 @@ function renderTeams(teams) {
 
                 ${
                   medal
-                    ? `<span class="team-medal">${medal}</span>`
+                    ? `
+                      <span class="medal">
+                        ${medal}
+                      </span>
+                    `
                     : ""
                 }
 
@@ -1196,8 +1181,11 @@ function renderTeams(teams) {
 
               </div>
 
+
               <div class="sub">
+
                 Team
+
               </div>
 
             </div>
@@ -1266,73 +1254,104 @@ function renderIndividuals(individuals) {
 
 
   container.innerHTML =
-    top5.map(function(person, index) {
+    top5
+      .map(function(person, index) {
 
-      const rank =
-        index + 1;
-
-
-      const trophy =
-        rank === 1
-          ? `<span class="trophy">🏆</span>`
-          : "";
+        const rank =
+          index + 1;
 
 
-      return `
+        /*
+         * INDIVIDUAL MEDALS:
+         *
+         * 1st = Gold
+         * 2nd = Silver
+         * 3rd = Bronze
+         * 4th = Nothing
+         * 5th = Nothing
+         */
 
-        <div class="row">
-
-          <div class="
-            rank
-            ${rank === 1 ? "rank-one" : ""}
-          ">
-
-            ${rank}
-
-          </div>
+        let medal = "";
 
 
-          <div>
+        if (rank === 1) {
 
-            <div class="name">
+          medal = "🥇";
 
-              ${trophy}
+        } else if (rank === 2) {
 
-              ${escapeHTML(
-                person.name
-              )}
+          medal = "🥈";
+
+        } else if (rank === 3) {
+
+          medal = "🥉";
+
+        }
+
+
+        return `
+
+          <div class="row">
+
+            <div class="
+              rank
+              ${rank === 1 ? "rank-one" : ""}
+            ">
+
+              ${rank}
 
             </div>
 
 
-            <div class="sub">
+            <div>
 
-              URN:
-              ${escapeHTML(
-                person.urn
+              <div class="name">
+
+                ${
+                  medal
+                    ? `
+                      <span class="medal">
+                        ${medal}
+                      </span>
+                    `
+                    : ""
+                }
+
+                ${escapeHTML(
+                  person.name
+                )}
+
+              </div>
+
+
+              <div class="sub">
+
+                URN:
+                ${escapeHTML(
+                  person.urn
+                )}
+
+              </div>
+
+            </div>
+
+
+            <div class="score">
+
+              ${formatPoints(
+                person.score
               )}
+
+              pts
 
             </div>
 
           </div>
 
+        `;
 
-          <div class="score">
-
-            ${formatPoints(
-              person.score
-            )}
-
-            pts
-
-          </div>
-
-        </div>
-
-      `;
-
-    })
-    .join("");
+      })
+      .join("");
 
 }
 
@@ -1362,17 +1381,17 @@ function renderSessions(sessions) {
 
 
   /*
-   * IMPORTANT:
+   * LATEST SESSION FIRST.
    *
-   * Latest session first.
+   * Example:
    *
-   * 23
-   * 22
-   * 21
+   * Session 23
+   * Session 22
+   * Session 21
    * ...
-   * 3
-   * 2
-   * 1
+   * Session 3
+   * Session 2
+   * Session 1
    */
 
   sessions.sort(function(a, b) {
@@ -1386,186 +1405,197 @@ function renderSessions(sessions) {
 
 
   container.innerHTML =
-    sessions.map(function(session) {
+    sessions
+      .map(function(session) {
 
-      const winner =
-        session.winner;
-
-
-      const closeFinishers =
-        session.closeFinishers || [];
+        const winner =
+          session.winner;
 
 
-      let closeHTML = "";
+        const closeFinishers =
+          session.closeFinishers || [];
 
 
-      if (closeFinishers.length) {
+        let closeHTML = "";
 
-        closeHTML = `
 
-          <div class="close-section">
+        if (closeFinishers.length) {
 
-            <div class="close-title">
+          closeHTML = `
 
-              Also close in this session
+            <div class="close-section">
+
+              <div class="close-title">
+
+                Also close in this session
+
+              </div>
+
+
+              ${
+                closeFinishers
+                  .map(function(person) {
+
+                    return `
+
+                      <div class="close-person">
+
+                        <div>
+
+                          <span class="close-name">
+
+                            ${escapeHTML(
+                              person.name
+                            )}
+
+                          </span>
+
+                          <br>
+
+                          <span>
+
+                            URN:
+                            ${escapeHTML(
+                              person.urn
+                            )}
+
+                          </span>
+
+                        </div>
+
+
+                        <div class="close-info">
+
+                          ${
+                            person.time
+                              ? "⏱ " +
+                                escapeHTML(
+                                  person.time
+                                )
+                              : ""
+                          }
+
+                        </div>
+
+                      </div>
+
+                    `;
+
+                  })
+                  .join("")
+              }
+
+            </div>
+
+          `;
+
+        }
+
+
+        return `
+
+          <div class="session">
+
+            <div class="session-title">
+
+              Session
+              ${escapeHTML(
+                session.session
+              )}
 
             </div>
 
 
-            ${
-              closeFinishers
-                .map(function(person) {
+            <div class="session-winner">
 
-                  return `
+              <div class="winner-label">
 
-                    <div class="close-person">
+                🏆 WINNER
 
-                      <div>
-
-                        <span class="close-name">
-
-                          ${escapeHTML(
-                            person.name
-                          )}
-
-                        </span>
-
-                        <br>
-
-                        <span>
-                          URN:
-                          ${escapeHTML(
-                            person.urn
-                          )}
-                        </span>
-
-                      </div>
+              </div>
 
 
-                      <div class="close-info">
+              <div class="winner-name">
 
-                        ${
-                          person.time
-                            ? "⏱ " +
-                              escapeHTML(
-                                person.time
-                              )
-                            : ""
-                        }
+                ${escapeHTML(
+                  winner.name
+                )}
 
-                      </div>
+              </div>
 
-                    </div>
 
-                  `;
+              <div class="winner-details">
 
-                })
-                .join("")
-            }
+                URN:
+                <strong>
+
+                  ${escapeHTML(
+                    winner.urn
+                  )}
+
+                </strong>
+
+
+                <br>
+
+
+                ${
+                  winner.team
+                    ? `
+                      Team:
+                      <strong>
+
+                        ${escapeHTML(
+                          winner.team
+                        )}
+
+                      </strong>
+
+                      <br>
+                    `
+                    : ""
+                }
+
+
+                ${
+                  winner.time
+                    ? `
+                      ⏱ Time:
+                      <strong>
+
+                        ${escapeHTML(
+                          winner.time
+                        )}
+
+                      </strong>
+                    `
+                    : ""
+                }
+
+              </div>
+
+
+              <div class="winner-points">
+
+                ${formatPoints(
+                  winner.points
+                )}
+
+                Points
+
+              </div>
+
+            </div>
+
+
+            ${closeHTML}
 
           </div>
 
         `;
 
-      }
-
-
-      return `
-
-        <div class="session">
-
-          <div class="session-title">
-
-            Session
-            ${escapeHTML(
-              session.session
-            )}
-
-          </div>
-
-
-          <div class="session-winner">
-
-            <div class="winner-label">
-
-              🏆 WINNER
-
-            </div>
-
-
-            <div class="winner-name">
-
-              ${escapeHTML(
-                winner.name
-              )}
-
-            </div>
-
-
-            <div class="winner-details">
-
-              URN:
-              <strong>
-                ${escapeHTML(
-                  winner.urn
-                )}
-              </strong>
-
-              <br>
-
-
-              ${
-                winner.team
-                  ? `
-                    Team:
-                    <strong>
-                      ${escapeHTML(
-                        winner.team
-                      )}
-                    </strong>
-                    <br>
-                  `
-                  : ""
-              }
-
-
-              ${
-                winner.time
-                  ? `
-                    ⏱ Time:
-                    <strong>
-                      ${escapeHTML(
-                        winner.time
-                      )}
-                    </strong>
-                  `
-                  : ""
-              }
-
-            </div>
-
-
-            <div class="winner-points">
-
-              ${formatPoints(
-                winner.points
-              )}
-
-              Points
-
-            </div>
-
-          </div>
-
-
-          ${closeHTML}
-
-        </div>
-
-      `;
-
-    })
-    .join("");
+      })
+      .join("");
 
 }
 
@@ -1598,7 +1628,9 @@ function searchURN() {
 
     result.innerHTML =
       `<div class="error">
+
         Please enter your URN.
+
       </div>`;
 
     return;
@@ -1624,11 +1656,15 @@ function searchURN() {
 
     result.innerHTML =
       `<div class="error">
+
         URN
+
         <strong>
           ${escapeHTML(urn)}
         </strong>
+
         was not found.
+
       </div>`;
 
     return;
@@ -1666,6 +1702,7 @@ function searchURN() {
         person.company
           ? `
             <p>
+
               <strong>
                 Company:
               </strong>
@@ -1673,6 +1710,7 @@ function searchURN() {
               ${escapeHTML(
                 person.company
               )}
+
             </p>
           `
           : ""
@@ -1683,6 +1721,7 @@ function searchURN() {
         person.designation
           ? `
             <p>
+
               <strong>
                 Designation:
               </strong>
@@ -1690,6 +1729,7 @@ function searchURN() {
               ${escapeHTML(
                 person.designation
               )}
+
             </p>
           `
           : ""
@@ -1700,6 +1740,7 @@ function searchURN() {
         person.team
           ? `
             <p>
+
               <strong>
                 Team:
               </strong>
@@ -1707,6 +1748,7 @@ function searchURN() {
               ${escapeHTML(
                 person.team
               )}
+
             </p>
           `
           : ""
@@ -1744,7 +1786,7 @@ function searchURN() {
 
 
 // =========================================================
-// ENTER KEY
+// ENTER KEY FOR URN SEARCH
 // =========================================================
 
 document
@@ -1773,7 +1815,7 @@ loadScoreboard();
 
 
 // =========================================================
-// AUTO REFRESH
+// AUTO REFRESH EVERY 10 SECONDS
 // =========================================================
 
 setInterval(
@@ -1782,6 +1824,7 @@ setInterval(
 );
 
 </script>
+
 
 </body>
 
