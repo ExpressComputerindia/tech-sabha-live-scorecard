@@ -16,6 +16,10 @@
 
 <style>
 
+/* =========================================================
+   GLOBAL
+========================================================= */
+
 * {
   box-sizing: border-box;
 }
@@ -37,6 +41,7 @@ body {
     );
 
   color: #172033;
+
 }
 
 
@@ -122,7 +127,7 @@ body {
 
 
 /* =========================================================
-   MAIN
+   MAIN WRAPPER
 ========================================================= */
 
 .wrap {
@@ -341,7 +346,7 @@ body {
 
 
 /* =========================================================
-   SESSIONS
+   SESSION WINNERS
 ========================================================= */
 
 .session {
@@ -358,9 +363,11 @@ body {
 }
 
 
+/* Session title now comes dynamically from Google Sheet */
+
 .session-title {
 
-  padding: 13px 16px;
+  padding: 14px 16px;
 
   background: #f1f5f9;
 
@@ -368,8 +375,14 @@ body {
 
   font-size: 16px;
 
+  line-height: 1.5;
+
 }
 
+
+/* =========================================================
+   SESSION WINNER
+========================================================= */
 
 .session-winner {
 
@@ -426,15 +439,10 @@ body {
 }
 
 
-.winner-points {
-
-  margin-top: 12px;
-
-  font-size: 21px;
-
-  font-weight: bold;
-
-}
+/*
+ * IMPORTANT:
+ * Winner points are intentionally NOT displayed.
+ */
 
 
 /* =========================================================
@@ -696,6 +704,20 @@ button:hover {
 
   }
 
+
+  .session-title {
+
+    font-size: 15px;
+
+  }
+
+
+  .winner-name {
+
+    font-size: 20px;
+
+  }
+
 }
 
 </style>
@@ -865,10 +887,15 @@ function escapeHTML(value) {
   return String(
     value ?? ""
   )
+
   .replace(/&/g, "&amp;")
+
   .replace(/</g, "&lt;")
+
   .replace(/>/g, "&gt;")
+
   .replace(/"/g, "&quot;")
+
   .replace(/'/g, "&#039;");
 
 }
@@ -876,11 +903,12 @@ function escapeHTML(value) {
 
 function numberValue(value) {
 
-  const n = Number(
-    String(value ?? "")
-      .replace(/,/g, "")
-      .trim()
-  );
+  const n =
+    Number(
+      String(value ?? "")
+        .replace(/,/g, "")
+        .trim()
+    );
 
   return isNaN(n)
     ? 0
@@ -903,11 +931,21 @@ function formatPoints(value) {
 
 function loadScoreboard() {
 
-  fetch(
+  /*
+   * Timestamp is added to the request so that
+   * every refresh asks for a fresh API response.
+   */
+
+  const requestURL =
     API +
     "?t=" +
-    Date.now()
-  )
+    Date.now();
+
+
+  fetch(requestURL, {
+    method: "GET",
+    cache: "no-store"
+  })
 
   .then(function(response) {
 
@@ -925,9 +963,17 @@ function loadScoreboard() {
 
   .then(function(data) {
 
+    /*
+     * Save all individuals for URN search.
+     */
+
     allIndividuals =
       data.allIndividuals || [];
 
+
+    /*
+     * Render all sections.
+     */
 
     renderFastest(
       data.fastest || []
@@ -949,6 +995,10 @@ function loadScoreboard() {
     );
 
 
+    /*
+     * Update timestamp.
+     */
+
     document.getElementById(
       "updated"
     ).innerText =
@@ -960,7 +1010,10 @@ function loadScoreboard() {
 
   .catch(function(error) {
 
-    console.error(error);
+    console.error(
+      "Scoreboard error:",
+      error
+    );
 
 
     document.getElementById(
@@ -1024,67 +1077,74 @@ function renderFastest(fastest) {
 
 
   container.innerHTML =
-    fastest.map(function(item) {
+    fastest
 
-      return `
+      .map(function(item) {
 
-        <div class="fastest">
+        return `
 
-          <div class="fastest-title">
+          <div class="fastest">
 
-            🏆
-            ${escapeHTML(item.slot)}
+            <div class="fastest-title">
 
-            Winner
+              🏆
+              ${escapeHTML(item.slot)}
+              Winner
+
+            </div>
+
+
+            <div class="fastest-body">
+
+              <div class="fastest-name">
+
+                ${escapeHTML(item.name)}
+
+              </div>
+
+
+              <div class="fastest-info">
+
+                URN:
+
+                <strong>
+                  ${escapeHTML(item.urn)}
+                </strong>
+
+
+                ${
+                  item.team
+                    ? `
+                      &nbsp; · &nbsp;
+
+                      Team:
+
+                      <strong>
+                        ${escapeHTML(item.team)}
+                      </strong>
+                    `
+                    : ""
+                }
+
+              </div>
+
+
+              <div class="fastest-time">
+
+                ⏱
+                ${escapeHTML(item.time)}
+
+              </div>
+
+            </div>
 
           </div>
 
+        `;
 
-          <div class="fastest-body">
+      })
 
-            <div class="fastest-name">
-
-              ${escapeHTML(item.name)}
-
-            </div>
-
-
-            <div class="fastest-info">
-
-              URN:
-              <strong>
-                ${escapeHTML(item.urn)}
-              </strong>
-
-              ${
-                item.team
-                  ? `
-                    &nbsp; · &nbsp;
-                    Team:
-                    <strong>
-                      ${escapeHTML(item.team)}
-                    </strong>
-                  `
-                  : ""
-              }
-
-            </div>
-
-
-            <div class="fastest-time">
-
-              ⏱
-              ${escapeHTML(item.time)}
-
-            </div>
-
-          </div>
-
-        </div>
-
-      `;
-
-    }).join("");
+      .join("");
 
 }
 
@@ -1114,7 +1174,7 @@ function renderTeams(teams) {
 
 
   /*
-   * Sort by highest score first.
+   * Highest team score first.
    */
 
   teams.sort(function(a, b) {
@@ -1129,7 +1189,9 @@ function renderTeams(teams) {
 
   container.innerHTML =
     teams
+
       .slice(0, 10)
+
       .map(function(team, index) {
 
         const rank =
@@ -1137,9 +1199,7 @@ function renderTeams(teams) {
 
 
         /*
-         * ONLY 1st TEAM GETS TROPHY.
-         *
-         * 2nd, 3rd, etc. get no medal.
+         * ONLY first-place team gets trophy.
          */
 
         const medal =
@@ -1176,9 +1236,8 @@ function renderTeams(teams) {
                     : ""
                 }
 
-                Team ${escapeHTML(
-                  team.team
-                )}
+                Team
+                ${escapeHTML(team.team)}
 
               </div>
 
@@ -1187,10 +1246,7 @@ function renderTeams(teams) {
 
             <div class="score">
 
-              ${formatPoints(
-                team.score
-              )}
-
+              ${formatPoints(team.score)}
               pts
 
             </div>
@@ -1200,6 +1256,7 @@ function renderTeams(teams) {
         `;
 
       })
+
       .join("");
 
 }
@@ -1249,34 +1306,35 @@ function renderIndividuals(individuals) {
 
   container.innerHTML =
     top5
+
       .map(function(person, index) {
 
         const rank =
           index + 1;
 
 
+        let medal = "";
+
+
         /*
-         * INDIVIDUAL MEDALS:
-         *
          * 1st = Gold
          * 2nd = Silver
          * 3rd = Bronze
-         * 4th = Nothing
-         * 5th = Nothing
          */
-
-        let medal = "";
-
 
         if (rank === 1) {
 
           medal = "🥇";
 
-        } else if (rank === 2) {
+        }
+
+        else if (rank === 2) {
 
           medal = "🥈";
 
-        } else if (rank === 3) {
+        }
+
+        else if (rank === 3) {
 
           medal = "🥉";
 
@@ -1311,9 +1369,7 @@ function renderIndividuals(individuals) {
                     : ""
                 }
 
-                ${escapeHTML(
-                  person.name
-                )}
+                ${escapeHTML(person.name)}
 
               </div>
 
@@ -1321,9 +1377,7 @@ function renderIndividuals(individuals) {
               <div class="sub">
 
                 URN:
-                ${escapeHTML(
-                  person.urn
-                )}
+                ${escapeHTML(person.urn)}
 
               </div>
 
@@ -1332,10 +1386,7 @@ function renderIndividuals(individuals) {
 
             <div class="score">
 
-              ${formatPoints(
-                person.score
-              )}
-
+              ${formatPoints(person.score)}
               pts
 
             </div>
@@ -1345,6 +1396,7 @@ function renderIndividuals(individuals) {
         `;
 
       })
+
       .join("");
 
 }
@@ -1375,20 +1427,23 @@ function renderSessions(sessions) {
 
 
   /*
-   * IMPORTANT:
+   * =======================================================
+   * IMPORTANT
+   * =======================================================
    *
-   * Latest session appears FIRST.
+   * Latest session FIRST.
    *
    * Example:
    *
    * Session 23
    * Session 22
    * Session 21
-   * Session 20
    * ...
    * Session 3
    * Session 2
    * Session 1
+   *
+   * This keeps the latest quiz/winner at the top.
    */
 
   sessions.sort(function(a, b) {
@@ -1403,15 +1458,82 @@ function renderSessions(sessions) {
 
   container.innerHTML =
     sessions
+
       .map(function(session) {
 
         const winner =
-          session.winner;
+          session.winner || {};
 
 
         const closeFinishers =
           session.closeFinishers || [];
 
+
+        /*
+         * =================================================
+         * SESSION TITLE
+         * =================================================
+         *
+         * The API supplies the title from the cell
+         * above each session winner table.
+         *
+         * Example:
+         *
+         * Session 3 - by WhatsApp
+         *
+         * Therefore you can change the title in Google
+         * Sheets and it will automatically appear here.
+         */
+
+        const sessionNumber =
+          numberValue(
+            session.session
+          );
+
+
+        const apiTitle =
+          String(
+            session.title ||
+            session.sessionTitle ||
+            session.topic ||
+            ""
+          ).trim();
+
+
+        let sessionTitle = "";
+
+
+        if (apiTitle) {
+
+          /*
+           * If API already sends:
+           * "Session 3 - by WhatsApp"
+           *
+           * use it directly.
+           */
+
+          sessionTitle =
+            apiTitle;
+
+        }
+
+        else {
+
+          /*
+           * Fallback if API only sends the title
+           * without "Session X -".
+           */
+
+          sessionTitle =
+            "Session " +
+            sessionNumber;
+
+        }
+
+
+        /*
+         * CLOSE FINISHERS
+         */
 
         let closeHTML = "";
 
@@ -1431,6 +1553,7 @@ function renderSessions(sessions) {
 
               ${
                 closeFinishers
+
                   .map(function(person) {
 
                     return `
@@ -1479,6 +1602,7 @@ function renderSessions(sessions) {
                     `;
 
                   })
+
                   .join("")
               }
 
@@ -1489,19 +1613,27 @@ function renderSessions(sessions) {
         }
 
 
+        /*
+         * =================================================
+         * SESSION CARD
+         * =================================================
+         */
+
         return `
 
           <div class="session">
 
+
+            <!-- DYNAMIC SESSION TITLE -->
+
             <div class="session-title">
 
-              Session
-              ${escapeHTML(
-                session.session
-              )}
+              ${escapeHTML(sessionTitle)}
 
             </div>
 
+
+            <!-- WINNER -->
 
             <div class="session-winner">
 
@@ -1515,7 +1647,7 @@ function renderSessions(sessions) {
               <div class="winner-name">
 
                 ${escapeHTML(
-                  winner.name
+                  winner.name || ""
                 )}
 
               </div>
@@ -1524,10 +1656,11 @@ function renderSessions(sessions) {
               <div class="winner-details">
 
                 URN:
+
                 <strong>
 
                   ${escapeHTML(
-                    winner.urn
+                    winner.urn || ""
                   )}
 
                 </strong>
@@ -1540,6 +1673,7 @@ function renderSessions(sessions) {
                   winner.team
                     ? `
                       Team:
+
                       <strong>
 
                         ${escapeHTML(
@@ -1558,6 +1692,7 @@ function renderSessions(sessions) {
                   winner.time
                     ? `
                       ⏱ Time:
+
                       <strong>
 
                         ${escapeHTML(
@@ -1572,15 +1707,10 @@ function renderSessions(sessions) {
               </div>
 
 
-              <div class="winner-points">
-
-                ${formatPoints(
-                  winner.points
-                )}
-
-                Points
-
-              </div>
+              <!--
+                NO POINTS HERE.
+                Session winner points intentionally removed.
+              -->
 
             </div>
 
@@ -1592,6 +1722,7 @@ function renderSessions(sessions) {
         `;
 
       })
+
       .join("");
 
 }
@@ -1642,7 +1773,9 @@ function searchURN() {
         return String(
           item.urn || ""
         )
+
         .trim()
+
         .toUpperCase() === urn;
 
       }
