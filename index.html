@@ -1112,10 +1112,6 @@ function renderTeams(teams) {
   }
 
 
-  /*
-   * Sort by highest score first.
-   */
-
   teams.sort(function(a, b) {
 
     return (
@@ -1134,12 +1130,6 @@ function renderTeams(teams) {
         const rank =
           index + 1;
 
-
-        /*
-         * ONLY 1st TEAM gets trophy.
-         *
-         * 2nd and 3rd get NO medal.
-         */
 
         const medal =
           rank === 1
@@ -1235,10 +1225,6 @@ function renderIndividuals(individuals) {
   }
 
 
-  /*
-   * Highest score first.
-   */
-
   individuals.sort(function(a, b) {
 
     return (
@@ -1260,16 +1246,6 @@ function renderIndividuals(individuals) {
         const rank =
           index + 1;
 
-
-        /*
-         * INDIVIDUAL MEDALS:
-         *
-         * 1st = Gold
-         * 2nd = Silver
-         * 3rd = Bronze
-         * 4th = Nothing
-         * 5th = Nothing
-         */
 
         let medal = "";
 
@@ -1379,20 +1355,6 @@ function renderSessions(sessions) {
 
   }
 
-
-  /*
-   * LATEST SESSION FIRST.
-   *
-   * Example:
-   *
-   * Session 23
-   * Session 22
-   * Session 21
-   * ...
-   * Session 3
-   * Session 2
-   * Session 1
-   */
 
   sessions.sort(function(a, b) {
 
@@ -1602,6 +1564,12 @@ function renderSessions(sessions) {
 
 // =========================================================
 // SEARCH YOUR URN
+//
+// ONLY DISPLAY:
+// 1. URN
+// 2. Name
+// 3. Total Points
+// 4. Company Name
 // =========================================================
 
 function searchURN() {
@@ -1677,11 +1645,7 @@ function searchURN() {
     <div class="result">
 
       <h3>
-
-        ${escapeHTML(
-          person.name
-        )}
-
+        Score Details
       </h3>
 
 
@@ -1698,85 +1662,43 @@ function searchURN() {
       </p>
 
 
-      ${
-        person.company
-          ? `
-            <p>
-
-              <strong>
-                Company:
-              </strong>
-
-              ${escapeHTML(
-                person.company
-              )}
-
-            </p>
-          `
-          : ""
-      }
-
-
-      ${
-        person.designation
-          ? `
-            <p>
-
-              <strong>
-                Designation:
-              </strong>
-
-              ${escapeHTML(
-                person.designation
-              )}
-
-            </p>
-          `
-          : ""
-      }
-
-
-      ${
-        person.team
-          ? `
-            <p>
-
-              <strong>
-                Team:
-              </strong>
-
-              ${escapeHTML(
-                person.team
-              )}
-
-            </p>
-          `
-          : ""
-      }
-
-
       <p>
 
         <strong>
-          Rank:
+          Name:
         </strong>
 
-        #${escapeHTML(
-          person.rank || "-"
+        ${escapeHTML(
+          person.name
         )}
 
       </p>
 
 
-      <div class="result-score">
+      <p>
+
+        <strong>
+          Total Points:
+        </strong>
 
         ${formatPoints(
           person.score
         )}
 
-        Points
+      </p>
 
-      </div>
+
+      <p>
+
+        <strong>
+          Company Name:
+        </strong>
+
+        ${escapeHTML(
+          person.company || "-"
+        )}
+
+      </p>
 
     </div>
 
@@ -1822,6 +1744,7 @@ setInterval(
   loadScoreboard,
   10000
 );
+
 
 </script>
 
