@@ -14,6 +14,7 @@
   Technology Sabha 2026 | Live Scorecard
 </title>
 
+
 <style>
 
 /* =========================================================
@@ -174,7 +175,7 @@ body {
 
 
 /* =========================================================
-   ROW
+   COMMON ROW
 ========================================================= */
 
 .row {
@@ -213,7 +214,6 @@ body {
   font-weight: bold;
 
 }
-
 
 .rank-one {
 
@@ -363,19 +363,44 @@ body {
 }
 
 
-/* Session title now comes dynamically from Google Sheet */
-
 .session-title {
 
-  padding: 14px 16px;
+  padding: 15px 16px;
 
-  background: #f1f5f9;
-
-  font-weight: bold;
+  background:
+    linear-gradient(
+      135deg,
+      #f1f5f9,
+      #e8eef5
+    );
 
   font-size: 16px;
 
   line-height: 1.5;
+
+}
+
+
+.session-title strong {
+
+  font-size: 17px;
+
+  color: #172033;
+
+}
+
+
+.session-description {
+
+  margin-top: 6px;
+
+  color: #475569;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  line-height: 1.55;
 
 }
 
@@ -435,83 +460,6 @@ body {
   color: #475569;
 
   line-height: 1.6;
-
-}
-
-
-/*
- * IMPORTANT:
- * Winner points are intentionally NOT displayed.
- */
-
-
-/* =========================================================
-   CLOSE FINISHERS
-========================================================= */
-
-.close-section {
-
-  padding: 14px 18px;
-
-  background: white;
-
-}
-
-
-.close-title {
-
-  margin-bottom: 9px;
-
-  color: #64748b;
-
-  font-size: 12px;
-
-  font-weight: bold;
-
-  text-transform: uppercase;
-
-  letter-spacing: .5px;
-
-}
-
-
-.close-person {
-
-  display: flex;
-
-  justify-content: space-between;
-
-  gap: 10px;
-
-  padding: 8px 0;
-
-  border-bottom:
-    1px solid #f1f5f9;
-
-  font-size: 13px;
-
-}
-
-
-.close-person:last-child {
-
-  border-bottom: 0;
-
-}
-
-
-.close-name {
-
-  font-weight: bold;
-
-}
-
-
-.close-info {
-
-  color: #64748b;
-
-  text-align: right;
 
 }
 
@@ -609,7 +557,7 @@ button:hover {
 
 
 /* =========================================================
-   ERROR / UPDATED
+   ERROR
 ========================================================= */
 
 .error {
@@ -624,6 +572,10 @@ button:hover {
 
 }
 
+
+/* =========================================================
+   UPDATED
+========================================================= */
 
 .updated {
 
@@ -691,30 +643,16 @@ button:hover {
   }
 
 
-  .close-person {
+  .session-title strong {
 
-    flex-direction: column;
-
-  }
-
-
-  .close-info {
-
-    text-align: left;
+    font-size: 16px;
 
   }
 
 
-  .session-title {
+  .session-description {
 
-    font-size: 15px;
-
-  }
-
-
-  .winner-name {
-
-    font-size: 20px;
+    font-size: 13px;
 
   }
 
@@ -792,7 +730,7 @@ button:hover {
 
 
 <!-- =======================================================
-     INDIVIDUAL TOP 5
+     TOP 5 INDIVIDUALS
 ======================================================= -->
 
 <div class="card">
@@ -887,15 +825,10 @@ function escapeHTML(value) {
   return String(
     value ?? ""
   )
-
   .replace(/&/g, "&amp;")
-
   .replace(/</g, "&lt;")
-
   .replace(/>/g, "&gt;")
-
   .replace(/"/g, "&quot;")
-
   .replace(/'/g, "&#039;");
 
 }
@@ -903,12 +836,11 @@ function escapeHTML(value) {
 
 function numberValue(value) {
 
-  const n =
-    Number(
-      String(value ?? "")
-        .replace(/,/g, "")
-        .trim()
-    );
+  const n = Number(
+    String(value ?? "")
+      .replace(/,/g, "")
+      .trim()
+  );
 
   return isNaN(n)
     ? 0
@@ -931,21 +863,11 @@ function formatPoints(value) {
 
 function loadScoreboard() {
 
-  /*
-   * Timestamp is added to the request so that
-   * every refresh asks for a fresh API response.
-   */
-
-  const requestURL =
+  fetch(
     API +
     "?t=" +
-    Date.now();
-
-
-  fetch(requestURL, {
-    method: "GET",
-    cache: "no-store"
-  })
+    Date.now()
+  )
 
   .then(function(response) {
 
@@ -963,17 +885,9 @@ function loadScoreboard() {
 
   .then(function(data) {
 
-    /*
-     * Save all individuals for URN search.
-     */
-
     allIndividuals =
       data.allIndividuals || [];
 
-
-    /*
-     * Render all sections.
-     */
 
     renderFastest(
       data.fastest || []
@@ -995,10 +909,6 @@ function loadScoreboard() {
     );
 
 
-    /*
-     * Update timestamp.
-     */
-
     document.getElementById(
       "updated"
     ).innerText =
@@ -1010,10 +920,7 @@ function loadScoreboard() {
 
   .catch(function(error) {
 
-    console.error(
-      "Scoreboard error:",
-      error
-    );
+    console.error(error);
 
 
     document.getElementById(
@@ -1078,7 +985,6 @@ function renderFastest(fastest) {
 
   container.innerHTML =
     fastest
-
       .map(function(item) {
 
         return `
@@ -1089,6 +995,7 @@ function renderFastest(fastest) {
 
               🏆
               ${escapeHTML(item.slot)}
+
               Winner
 
             </div>
@@ -1111,10 +1018,10 @@ function renderFastest(fastest) {
                   ${escapeHTML(item.urn)}
                 </strong>
 
-
                 ${
                   item.team
                     ? `
+
                       &nbsp; · &nbsp;
 
                       Team:
@@ -1122,6 +1029,7 @@ function renderFastest(fastest) {
                       <strong>
                         ${escapeHTML(item.team)}
                       </strong>
+
                     `
                     : ""
                 }
@@ -1143,7 +1051,6 @@ function renderFastest(fastest) {
         `;
 
       })
-
       .join("");
 
 }
@@ -1173,9 +1080,7 @@ function renderTeams(teams) {
   }
 
 
-  /*
-   * Highest team score first.
-   */
+  // Highest score first.
 
   teams.sort(function(a, b) {
 
@@ -1189,18 +1094,14 @@ function renderTeams(teams) {
 
   container.innerHTML =
     teams
-
       .slice(0, 10)
-
       .map(function(team, index) {
 
         const rank =
           index + 1;
 
 
-        /*
-         * ONLY first-place team gets trophy.
-         */
+        // ONLY FIRST TEAM GETS TROPHY.
 
         const medal =
           rank === 1
@@ -1236,8 +1137,9 @@ function renderTeams(teams) {
                     : ""
                 }
 
-                Team
-                ${escapeHTML(team.team)}
+                Team ${escapeHTML(
+                  team.team
+                )}
 
               </div>
 
@@ -1246,7 +1148,10 @@ function renderTeams(teams) {
 
             <div class="score">
 
-              ${formatPoints(team.score)}
+              ${formatPoints(
+                team.score
+              )}
+
               pts
 
             </div>
@@ -1256,7 +1161,6 @@ function renderTeams(teams) {
         `;
 
       })
-
       .join("");
 
 }
@@ -1286,9 +1190,7 @@ function renderIndividuals(individuals) {
   }
 
 
-  /*
-   * Highest score first.
-   */
+  // Highest score first.
 
   individuals.sort(function(a, b) {
 
@@ -1306,7 +1208,6 @@ function renderIndividuals(individuals) {
 
   container.innerHTML =
     top5
-
       .map(function(person, index) {
 
         const rank =
@@ -1316,25 +1217,15 @@ function renderIndividuals(individuals) {
         let medal = "";
 
 
-        /*
-         * 1st = Gold
-         * 2nd = Silver
-         * 3rd = Bronze
-         */
-
         if (rank === 1) {
 
           medal = "🥇";
 
-        }
-
-        else if (rank === 2) {
+        } else if (rank === 2) {
 
           medal = "🥈";
 
-        }
-
-        else if (rank === 3) {
+        } else if (rank === 3) {
 
           medal = "🥉";
 
@@ -1369,7 +1260,9 @@ function renderIndividuals(individuals) {
                     : ""
                 }
 
-                ${escapeHTML(person.name)}
+                ${escapeHTML(
+                  person.name
+                )}
 
               </div>
 
@@ -1377,7 +1270,10 @@ function renderIndividuals(individuals) {
               <div class="sub">
 
                 URN:
-                ${escapeHTML(person.urn)}
+
+                ${escapeHTML(
+                  person.urn
+                )}
 
               </div>
 
@@ -1386,7 +1282,10 @@ function renderIndividuals(individuals) {
 
             <div class="score">
 
-              ${formatPoints(person.score)}
+              ${formatPoints(
+                person.score
+              )}
+
               pts
 
             </div>
@@ -1396,7 +1295,6 @@ function renderIndividuals(individuals) {
         `;
 
       })
-
       .join("");
 
 }
@@ -1426,25 +1324,17 @@ function renderSessions(sessions) {
   }
 
 
-  /*
-   * =======================================================
-   * IMPORTANT
-   * =======================================================
-   *
-   * Latest session FIRST.
-   *
-   * Example:
-   *
-   * Session 23
-   * Session 22
-   * Session 21
-   * ...
-   * Session 3
-   * Session 2
-   * Session 1
-   *
-   * This keeps the latest quiz/winner at the top.
-   */
+  // =======================================================
+  // LATEST SESSION FIRST
+  //
+  // 23
+  // 22
+  // 21
+  // ...
+  // 3
+  // 2
+  // 1
+  // =======================================================
 
   sessions.sort(function(a, b) {
 
@@ -1458,271 +1348,169 @@ function renderSessions(sessions) {
 
   container.innerHTML =
     sessions
-
       .map(function(session) {
 
-        const winner =
-          session.winner || {};
+        const winners =
+          session.winners || [];
 
 
-        const closeFinishers =
-          session.closeFinishers || [];
+        if (!winners.length) {
 
-
-        /*
-         * =================================================
-         * SESSION TITLE
-         * =================================================
-         *
-         * The API supplies the title from the cell
-         * above each session winner table.
-         *
-         * Example:
-         *
-         * Session 3 - by WhatsApp
-         *
-         * Therefore you can change the title in Google
-         * Sheets and it will automatically appear here.
-         */
-
-        const sessionNumber =
-          numberValue(
-            session.session
-          );
-
-
-        const apiTitle =
-          String(
-            session.title ||
-            session.sessionTitle ||
-            session.topic ||
-            ""
-          ).trim();
-
-
-        let sessionTitle = "";
-
-
-        if (apiTitle) {
-
-          /*
-           * If API already sends:
-           * "Session 3 - by WhatsApp"
-           *
-           * use it directly.
-           */
-
-          sessionTitle =
-            apiTitle;
-
-        }
-
-        else {
-
-          /*
-           * Fallback if API only sends the title
-           * without "Session X -".
-           */
-
-          sessionTitle =
-            "Session " +
-            sessionNumber;
+          return "";
 
         }
 
 
-        /*
-         * CLOSE FINISHERS
-         */
+        // Dynamic title from Google Sheet / API.
 
-        let closeHTML = "";
-
-
-        if (closeFinishers.length) {
-
-          closeHTML = `
-
-            <div class="close-section">
-
-              <div class="close-title">
-
-                Also close in this session
-
-              </div>
+        const title =
+          session.title || "";
 
 
-              ${
-                closeFinishers
+        // =================================================
+        // WINNERS
+        // =================================================
 
-                  .map(function(person) {
+        const winnersHTML =
+          winners
+            .map(function(winner) {
 
-                    return `
+              return `
 
-                      <div class="close-person">
+                <div class="session-winner">
 
-                        <div>
+                  <div class="winner-label">
 
-                          <span class="close-name">
+                    🏆 WINNER
 
+                  </div>
+
+
+                  <div class="winner-name">
+
+                    ${escapeHTML(
+                      winner.name
+                    )}
+
+                  </div>
+
+
+                  <div class="winner-details">
+
+                    ${
+                      winner.urn
+                        ? `
+
+                          URN:
+
+                          <strong>
                             ${escapeHTML(
-                              person.name
+                              winner.urn
                             )}
+                          </strong>
 
-                          </span>
+                        `
+                        : ""
+                    }
+
+
+                    ${
+                      winner.team
+                        ? `
 
                           <br>
 
-                          <span>
+                          Team:
 
-                            URN:
+                          <strong>
                             ${escapeHTML(
-                              person.urn
+                              winner.team
                             )}
+                          </strong>
 
-                          </span>
-
-                        </div>
-
-
-                        <div class="close-info">
-
-                          ${
-                            person.time
-                              ? "⏱ " +
-                                escapeHTML(
-                                  person.time
-                                )
-                              : ""
-                          }
-
-                        </div>
-
-                      </div>
-
-                    `;
-
-                  })
-
-                  .join("")
-              }
-
-            </div>
-
-          `;
-
-        }
+                        `
+                        : ""
+                    }
 
 
-        /*
-         * =================================================
-         * SESSION CARD
-         * =================================================
-         */
+                    ${
+                      winner.time
+                        ? `
+
+                          <br>
+
+                          ⏱ Time:
+
+                          <strong>
+                            ${escapeHTML(
+                              winner.time
+                            )}
+                          </strong>
+
+                        `
+                        : ""
+                    }
+
+                  </div>
+
+                </div>
+
+              `;
+
+            })
+            .join("");
+
+
+        // =================================================
+        // SESSION CARD
+        // =================================================
 
         return `
 
           <div class="session">
 
 
-            <!-- DYNAMIC SESSION TITLE -->
-
             <div class="session-title">
 
-              ${escapeHTML(sessionTitle)}
+              <strong>
 
-            </div>
-
-
-            <!-- WINNER -->
-
-            <div class="session-winner">
-
-              <div class="winner-label">
-
-                🏆 WINNER
-
-              </div>
-
-
-              <div class="winner-name">
-
+                Session
                 ${escapeHTML(
-                  winner.name || ""
+                  session.session
                 )}
 
-              </div>
+              </strong>
 
 
-              <div class="winner-details">
+              ${
+                title
+                  ? `
 
-                URN:
+                    <div
+                      class="session-description"
+                    >
 
-                <strong>
+                      ${escapeHTML(
+                        title
+                      )}
 
-                  ${escapeHTML(
-                    winner.urn || ""
-                  )}
+                    </div>
 
-                </strong>
-
-
-                <br>
-
-
-                ${
-                  winner.team
-                    ? `
-                      Team:
-
-                      <strong>
-
-                        ${escapeHTML(
-                          winner.team
-                        )}
-
-                      </strong>
-
-                      <br>
-                    `
-                    : ""
-                }
-
-
-                ${
-                  winner.time
-                    ? `
-                      ⏱ Time:
-
-                      <strong>
-
-                        ${escapeHTML(
-                          winner.time
-                        )}
-
-                      </strong>
-                    `
-                    : ""
-                }
-
-              </div>
-
-
-              <!--
-                NO POINTS HERE.
-                Session winner points intentionally removed.
-              -->
+                  `
+                  : ""
+              }
 
             </div>
 
 
-            ${closeHTML}
+            ${winnersHTML}
+
 
           </div>
 
         `;
 
       })
-
       .join("");
 
 }
@@ -1773,9 +1561,7 @@ function searchURN() {
         return String(
           item.urn || ""
         )
-
         .trim()
-
         .toUpperCase() === urn;
 
       }
@@ -1831,6 +1617,7 @@ function searchURN() {
       ${
         person.company
           ? `
+
             <p>
 
               <strong>
@@ -1842,6 +1629,7 @@ function searchURN() {
               )}
 
             </p>
+
           `
           : ""
       }
@@ -1850,6 +1638,7 @@ function searchURN() {
       ${
         person.designation
           ? `
+
             <p>
 
               <strong>
@@ -1861,6 +1650,7 @@ function searchURN() {
               )}
 
             </p>
+
           `
           : ""
       }
@@ -1869,6 +1659,7 @@ function searchURN() {
       ${
         person.team
           ? `
+
             <p>
 
               <strong>
@@ -1880,6 +1671,7 @@ function searchURN() {
               )}
 
             </p>
+
           `
           : ""
       }
