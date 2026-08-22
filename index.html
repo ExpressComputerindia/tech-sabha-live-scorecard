@@ -1,147 +1,509 @@
-<?php session_start(); ?>
-<?php
-include "gtag.php";
-?>
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
-<title>Technology Sabha 2026 | 21-23 Aug | Taj Amer Jaipur</title>
+  <meta charset="UTF-8">
 
-<meta charset="utf-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-<meta name="description"
-content="Technology Sabha 2026 brings together IT Secretaries, Mission Directors, CISOs and policymakers to explore AI-led governance and digital transformation.">
+  <title>
+    Technology Sabha 2026 | Live Scorecard
+  </title>
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, minimal-ui" />
+  <style>
 
-<link rel="icon" type="image/png" href="favicon.ico">
-<link rel="icon" type="image/png" href="favicon.png">
+    * {
+      box-sizing: border-box;
+    }
 
-<link rel="preconnect" href="https://fonts.gstatic.com">
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #f4f7fb, #eef2f7);
+      color: #172033;
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap"
-rel="stylesheet">
+    /* =========================================================
+       HEADER
+    ========================================================= */
 
-<link rel="stylesheet"
-href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    .header {
+      background: linear-gradient(135deg, #111827, #1e293b);
+      color: white;
+      text-align: center;
+      padding: 35px 18px;
+      box-shadow: 0 5px 25px rgba(0,0,0,.15);
+    }
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    .header h1 {
+      margin: 0;
+      font-size: 34px;
+      letter-spacing: 1px;
+    }
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    .header .city {
+      margin-top: 7px;
+      font-size: 19px;
+      font-weight: bold;
+      color: #facc15;
+    }
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    .header .headline {
+      margin: 12px auto 0;
+      max-width: 900px;
+      font-size: 16px;
+      color: #cbd5e1;
+    }
 
-<link rel="stylesheet" href="css/bootstrap.min.css">
-<link href="css/common-text.css?3" rel="stylesheet" type="text/css" />
-<link href="css/form.css" rel="stylesheet" type="text/css" />
-<link href="css/menu.css?1" rel="stylesheet" type="text/css" />
-<link href="css/common-layout.css?1.6" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" type="text/css" href="css/responsive.css?1.3">
+    .header .live {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 7px 16px;
+      border-radius: 30px;
+      background: #dc2626;
+      color: white;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
 
-<link rel="stylesheet"
-href="https://forms.ebpd.in/organisation/org-autocomplete.css">
+    /* =========================================================
+       MAIN
+    ========================================================= */
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    .wrap {
+      width: 100%;
+      max-width: 1000px;
+      margin: auto;
+      padding: 22px 15px 50px;
+    }
 
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css"
-rel="stylesheet">
+    /* =========================================================
+       CARD
+    ========================================================= */
 
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 20px rgba(15,23,42,.08);
+    }
 
-<script src="https://www.google.com/recaptcha/api.js?render=6LcU5korAAAAABGrRJbpw5ES0idcyONC9dXOpv-w"></script>
+    .card h2 {
+      margin: 0 0 18px;
+      font-size: 22px;
+    }
 
+    /* =========================================================
+       ROW
+    ========================================================= */
 
-<!-- Google Analytics -->
+    .row {
+      display: grid;
+      grid-template-columns: 55px 1fr auto;
+      gap: 15px;
+      align-items: center;
+      padding: 15px 5px;
+      border-bottom: 1px solid #e5e7eb;
+    }
 
-<script async
-src="https://www.googletagmanager.com/gtag/js?id=UA-28525040-16"></script>
+    .row:last-child {
+      border-bottom: 0;
+    }
 
-<script>
+    .rank {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
 
-window.dataLayer = window.dataLayer || [];
+    .rank-one {
+      color: #b45309;
+    }
 
-function gtag(){
-    dataLayer.push(arguments);
-}
+    .name {
+      font-size: 18px;
+      font-weight: bold;
+    }
 
-gtag('js', new Date());
+    .sub {
+      margin-top: 5px;
+      color: #64748b;
+      font-size: 13px;
+    }
 
-gtag('config', 'UA-28525040-16');
+    .score {
+      text-align: right;
+      font-size: 18px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
 
-</script>
+    /* =========================================================
+       MEDALS
+    ========================================================= */
 
+    .medal {
+      display: inline-block;
+      margin-right: 7px;
+      font-size: 21px;
+      vertical-align: middle;
+    }
 
-<script async
-src="https://www.googletagmanager.com/gtag/js?id=G-PYMX7T395P"></script>
+    /* =========================================================
+       FASTEST TO ENTER
+    ========================================================= */
 
-<script>
+    .fastest {
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
 
-window.dataLayer = window.dataLayer || [];
+    .fastest-title {
+      background: #111827;
+      color: white;
+      padding: 13px 15px;
+      font-size: 15px;
+      font-weight: bold;
+    }
 
-function gtag(){
-    dataLayer.push(arguments);
-}
+    .fastest-body {
+      padding: 15px;
+    }
 
-gtag('js', new Date());
+    .fastest-name {
+      font-size: 20px;
+      font-weight: bold;
+    }
 
-gtag('config', 'G-PYMX7T395P');
+    .fastest-info {
+      margin-top: 7px;
+      color: #475569;
+      font-size: 14px;
+    }
 
-</script>
+    .fastest-time {
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #2563eb;
+    }
 
+    /* =========================================================
+       EXPANDABLE TEAM LEADERBOARD
+    ========================================================= */
 
-<script type="text/javascript">
+    .team-container {
+      border-bottom: 1px solid #e5e7eb;
+    }
 
-_linkedin_partner_id = "1027930";
+    .team-row {
+      display: grid;
+      grid-template-columns: 55px 1fr auto;
+      gap: 15px;
+      align-items: center;
+      padding: 15px 5px;
+      cursor: pointer;
+      transition: background .2s ease;
+      border-radius: 10px;
+    }
 
-window._linkedin_data_partner_ids =
-window._linkedin_data_partner_ids || [];
+    .team-row:hover {
+      background: #f8fafc;
+    }
 
-window._linkedin_data_partner_ids.push(
-    _linkedin_partner_id
-);
+    .team-arrow {
+      display: inline-block;
+      margin-left: 8px;
+      font-size: 13px;
+      color: #64748b;
+      transition: transform .2s ease;
+    }
 
-</script>
+    .team-row.open .team-arrow {
+      transform: rotate(90deg);
+    }
 
-<script type="text/javascript">
+    .team-members {
+      display: none;
+      margin: 0 0 12px 55px;
+      border-left: 3px solid #e2e8f0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
 
-(function(){
+    .team-members.open {
+      display: block;
+    }
 
-var s =
-document.getElementsByTagName("script")[0];
+    .team-member {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 11px 15px;
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+    }
 
-var b =
-document.createElement("script");
+    .team-member:last-child {
+      border-bottom: 0;
+    }
 
-b.type = "text/javascript";
-b.async = true;
+    .team-member-name {
+      font-size: 14px;
+      font-weight: bold;
+    }
 
-b.src =
-"https://snap.licdn.com/li.lms-analytics/insight.min.js";
+    .team-member-info {
+      margin-top: 4px;
+      color: #64748b;
+      font-size: 12px;
+      line-height: 1.5;
+    }
 
-s.parentNode.insertBefore(b,s);
+    .team-member-score {
+      font-size: 14px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
 
-})();
+    .team-member-rank {
+      color: #94a3b8;
+      margin-right: 6px;
+    }
 
-</script>
+    /* =========================================================
+       SESSIONS
+    ========================================================= */
 
+    .session {
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
 
-<noscript>
+    .session-title {
+      padding: 13px 16px;
+      background: #f1f5f9;
+      font-weight: bold;
+      font-size: 16px;
+    }
 
-<img
-height="1"
-width="1"
-style="display:none;"
-alt=""
-src="https://px.ads.linkedin.com/collect/?pid=1027930&fmt=gif"
-/>
+    .session-winner {
+      padding: 18px;
+      background: linear-gradient(135deg, #fff7ed, #fffbeb);
+    }
 
-</noscript>
+    .winner-label {
+      display: inline-block;
+      margin-bottom: 8px;
+      padding: 5px 10px;
+      border-radius: 20px;
+      background: #f59e0b;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .winner-name {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .winner-details {
+      margin-top: 8px;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    .winner-points {
+      margin-top: 12px;
+      font-size: 21px;
+      font-weight: bold;
+    }
+
+    /* =========================================================
+       CLOSE FINISHERS
+    ========================================================= */
+
+    .close-section {
+      padding: 14px 18px;
+      background: white;
+    }
+
+    .close-title {
+      margin-bottom: 9px;
+      color: #64748b;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .close-person {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 13px;
+    }
+
+    .close-person:last-child {
+      border-bottom: 0;
+    }
+
+    .close-name {
+      font-weight: bold;
+    }
+
+    .close-info {
+      color: #64748b;
+      text-align: right;
+    }
+
+    /* =========================================================
+       SEARCH
+    ========================================================= */
+
+    .search {
+      display: flex;
+      gap: 10px;
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      padding: 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 13px 20px;
+      background: #2563eb;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    .result {
+      margin-top: 15px;
+      padding: 18px;
+      border-radius: 14px;
+      background: #f8fafc;
+    }
+
+    .result h3 {
+      margin-top: 0;
+      font-size: 22px;
+    }
+
+    .result-score {
+      margin-top: 15px;
+      font-size: 25px;
+      font-weight: bold;
+      color: #2563eb;
+    }
+
+    /* =========================================================
+       ERROR / UPDATED
+    ========================================================= */
+
+    .error {
+      padding: 13px;
+      border-radius: 10px;
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .updated {
+      text-align: center;
+      color: #64748b;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+
+    /* =========================================================
+       MOBILE
+    ========================================================= */
+
+    @media(max-width:600px) {
+
+      .header h1 {
+        font-size: 27px;
+      }
+
+      .row {
+        grid-template-columns: 42px 1fr auto;
+        gap: 8px;
+      }
+
+      .name {
+        font-size: 16px;
+      }
+
+      .score {
+        font-size: 16px;
+      }
+
+      .search {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .close-person {
+        flex-direction: column;
+      }
+
+      .close-info {
+        text-align: left;
+      }
+
+      .team-row {
+        grid-template-columns: 42px 1fr auto;
+        gap: 8px;
+      }
+
+      .team-members {
+        margin-left: 42px;
+      }
+
+      .team-member {
+        grid-template-columns: 1fr auto;
+        padding: 10px;
+      }
+
+      .team-member-name {
+        font-size: 13px;
+      }
+
+      .team-member-score {
+        font-size: 13px;
+      }
+
+    }
+
+  </style>
 
 </head>
 
@@ -149,2071 +511,1441 @@ src="https://px.ads.linkedin.com/collect/?pid=1027930&fmt=gif"
 <body>
 
 
-<a
-href="javascript:void(0);"
-id="Arrowfix"
-title="Scroll to Top"
-style="display:none;">
+  <!-- =======================================================
+       HEADER
+  ======================================================= -->
 
-Top<span></span>
+  <div class="header">
 
-</a>
+    <h1>
+      TECHNOLOGY SABHA 2026
+    </h1>
+
+    <div class="city">
+      Jaipur
+    </div>
+
+    <div class="headline">
+      India Ascending From Digital Infrastructure
+      to Intelligent Governance
+    </div>
+
+    <div class="live">
+      LIVE SCORECARD
+    </div>
+
+  </div>
 
 
-<div class="header-logo">
+  <div class="wrap">
 
-    <div class="top-header-left">
 
-        <img
-        src="images/logos/ie_logo.svg"
-        alt="Indian Express Logo"
-        class="img-fluid d-block">
+    <!-- =======================================================
+         SEARCH URN
+    ======================================================= -->
+
+    <div class="card">
+
+      <h2>
+        🔎 Search Your URN
+      </h2>
+
+      <div class="search">
+
+        <input
+          id="urn"
+          placeholder="Enter your URN"
+        >
+
+        <button
+          onclick="searchURN()"
+        >
+          GET TO KNOW YOUR SCORE
+        </button>
+
+      </div>
+
+      <div id="result"></div>
 
     </div>
 
 
-    <div class="top-header-right">
+    <!-- =======================================================
+         FASTEST TO ENTER
+    ======================================================= -->
 
-        <a
-        href="https://www.expresscomputer.in/"
-        target="_blank">
+    <div class="card">
 
-            <img
-            src="images/logos/eclogo.svg?1"
-            alt="">
+      <h2>
+        ⚡ Fastest to Enter
+      </h2>
 
-        </a>
-
-    </div>
-
-</div>
-
-
-<div class="topwrapper position-sticky bg_white position-relative">
-
-    <div class="topleft">
-
-        <img
-        src="images/logos/techsabha_logo_black.svg"
-        alt=""
-        class="logo1"
-        style="display:none;">
-
-        <a
-        href="https://www.expresscomputer.in/"
-        target="_blank">
-
-            <img
-            src="images/logos/ec_comp_logo.svg"
-            alt=""
-            class="logo2">
-
-        </a>
+      <div id="fastest">
+        Loading...
+      </div>
 
     </div>
 
-</div>
 
+    <!-- =======================================================
+         TEAM LEADERBOARD
+    ======================================================= -->
 
-<style>
+    <div class="card">
 
-/* =========================================================
-   LEADERBOARD PAGE
-========================================================= */
+      <h2>
+        🏆 Team Leaderboard
+      </h2>
 
-.idxsponsorship.leaderboard-page *::before,
-.idxsponsorship.leaderboard-page *::after {
-
-    content:none !important;
-    display:none !important;
-    border:0 !important;
-    background:none !important;
-    box-shadow:none !important;
-
-}
-
-
-.idxsponsorship.leaderboard-page,
-.idxsponsorship.leaderboard-page .container,
-.idxsponsorship.leaderboard-page .leaderboard-content,
-.idxsponsorship.leaderboard-page .leaderboard-card,
-.idxsponsorship.leaderboard-page .leaderboard-card h2 {
-
-    border-top:0 !important;
-
-}
-
-
-.leaderboard-page {
-
-    padding-bottom:60px;
-
-}
-
-
-.leaderboard-header-row {
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:18px;
-    flex-wrap:wrap;
-
-}
-
-
-.leaderboard-header-row .page-title {
-
-    margin-bottom:0 !important;
-
-}
-
-
-.live-scoreboard-btn {
-
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-
-    padding:11px 20px;
-
-    border-radius:6px;
-
-    text-decoration:none;
-
-    font-size:13px;
-
-    font-weight:600;
-
-    letter-spacing:.4px;
-
-    text-transform:uppercase;
-
-    white-space:nowrap;
-
-    transition:all .2s ease;
-
-}
-
-
-.live-scoreboard-btn {
-
-    display:inline-flex;
-
-    align-items:center;
-
-    gap:7px;
-
-    margin-top:4px;
-
-    margin-bottom:12px;
-
-}
-
-
-.live-scoreboard-btn:hover {
-
-    text-decoration:none;
-
-    transform:translateY(-1px);
-
-}
-
-
-.live-scoreboard-btn .live-dot {
-
-    width:8px;
-    height:8px;
-
-    border-radius:50%;
-
-    background:#fff;
-
-    display:inline-block;
-
-    box-shadow:
-    0 0 0 4px rgba(255,255,255,.15);
-
-    animation:
-    liveScoreBlink 1s infinite;
-
-}
-
-
-@keyframes liveScoreBlink {
-
-    0%,100% {
-
-        opacity:1;
-        transform:scale(1);
-
-    }
-
-    50% {
-
-        opacity:.25;
-        transform:scale(.75);
-
-    }
-
-}
-
-
-.leaderboard-content {
-
-    max-width:1000px;
-
-    margin:35px auto 0;
-
-}
-
-
-.leaderboard-card {
-
-    background:#fff;
-
-    border:1px solid #e5e7eb;
-
-    border-radius:14px;
-
-    padding:22px;
-
-    margin-bottom:20px;
-
-    box-shadow:
-    0 5px 20px rgba(15,23,42,.06);
-
-}
-
-
-.leaderboard-card h2 {
-
-    margin:0 0 18px;
-
-    font-size:22px;
-
-    line-height:1.3;
-
-}
-
-
-.leaderboard-card .row {
-
-    display:grid;
-
-    grid-template-columns:
-    55px 1fr auto;
-
-    gap:15px;
-
-    align-items:center;
-
-    padding:15px 5px;
-
-    border-bottom:
-    1px solid #e5e7eb;
-
-}
-
-
-.leaderboard-card .row:last-child {
-
-    border-bottom:0;
-
-}
-
-
-.leaderboard-card .rank {
-
-    text-align:center;
-
-    font-size:20px;
-
-    font-weight:700;
-
-}
-
-
-.leaderboard-card .name {
-
-    font-size:18px;
-
-    font-weight:700;
-
-}
-
-
-.leaderboard-card .sub {
-
-    margin-top:5px;
-
-    color:#64748b;
-
-    font-size:13px;
-
-}
-
-
-.leaderboard-card .score {
-
-    text-align:right;
-
-    font-size:18px;
-
-    font-weight:700;
-
-    white-space:nowrap;
-
-}
-
-
-.medal {
-
-    display:inline-block;
-
-    margin-right:7px;
-
-    font-size:21px;
-
-    vertical-align:middle;
-
-}
-
-
-/* =========================================================
-   SEARCH
-========================================================= */
-
-.search {
-
-    display:flex;
-
-    gap:10px;
-
-}
-
-
-.search input {
-
-    flex:1;
-
-    min-width:0;
-
-    padding:14px;
-
-    border:
-    1px solid #cbd5e1;
-
-    border-radius:10px;
-
-    font-size:16px;
-
-}
-
-
-.search button {
-
-    border:0;
-
-    border-radius:10px;
-
-    padding:13px 20px;
-
-    background:#27158f !important;
-
-    color:#fff !important;
-
-    font-weight:700;
-
-    cursor:pointer;
-
-}
-
-
-.search button:hover {
-
-    background:#4A00A0 !important;
-
-}
-
-
-.result {
-
-    margin-top:15px;
-
-    padding:18px;
-
-    border-radius:14px;
-
-    background:#f8fafc;
-
-}
-
-
-.result h3 {
-
-    margin-top:0;
-
-    font-size:22px;
-
-}
-
-
-.result-score {
-
-    margin-top:15px;
-
-    font-size:25px;
-
-    font-weight:700;
-
-    color:#2563eb;
-
-}
-
-
-#result {
-
-    position:static;
-
-    border:0 !important;
-
-    max-width:682px;
-
-}
-
-
-.error {
-
-    padding:13px;
-
-    border-radius:10px;
-
-    background:#ddf4ed;
-
-    color:#1DB67B !important;
-
-}
-
-
-.updated {
-
-    text-align:center;
-
-    color:#64748b;
-
-    font-size:12px;
-
-    margin-top:10px;
-
-}
-
-
-/* =========================================================
-   SESSION DROPDOWN
-========================================================= */
-
-.session-select-wrap {
-
-    margin-bottom:20px;
-
-}
-
-
-.session-select-label {
-
-    display:block;
-
-    margin-bottom:8px;
-
-    font-size:14px;
-
-    font-weight:700;
-
-    color:#334155;
-
-}
-
-
-.session-select {
-
-    width:100%;
-
-    padding:14px 16px;
-
-    border:
-    1px solid #cbd5e1;
-
-    border-radius:10px;
-
-    background:#fff;
-
-    color:#111827;
-
-    font-size:16px;
-
-    font-weight:600;
-
-    cursor:pointer;
-
-    outline:none;
-
-}
-
-
-.session-select:focus {
-
-    border-color:#27158f;
-
-    box-shadow:
-    0 0 0 3px rgba(39,21,143,.10);
-
-}
-
-
-/* =========================================================
-   SESSION SCORE CARD
-========================================================= */
-
-.session-score-box {
-
-    border:
-    1px solid #e2e8f0;
-
-    border-radius:14px;
-
-    overflow:hidden;
-
-    background:#fff;
-
-}
-
-
-.session-score-header {
-
-    padding:16px 18px;
-
-    background:#f1f5f9;
-
-    font-size:17px;
-
-    font-weight:700;
-
-}
-
-
-.session-score-row {
-
-    display:grid;
-
-    grid-template-columns:
-    55px 1fr auto;
-
-    gap:15px;
-
-    align-items:center;
-
-    padding:15px 18px;
-
-    border-bottom:
-    1px solid #e5e7eb;
-
-}
-
-
-.session-score-row:last-child {
-
-    border-bottom:0;
-
-}
-
-
-.session-score-rank {
-
-    text-align:center;
-
-    font-size:19px;
-
-    font-weight:700;
-
-}
-
-
-.session-score-name {
-
-    font-size:17px;
-
-    font-weight:700;
-
-}
-
-
-.session-score-info {
-
-    margin-top:5px;
-
-    color:#64748b;
-
-    font-size:13px;
-
-    line-height:1.5;
-
-}
-
-
-.session-score-points {
-
-    text-align:right;
-
-    font-size:18px;
-
-    font-weight:700;
-
-    white-space:nowrap;
-
-}
-
-
-.session-winner-row {
-
-    background:
-    linear-gradient(
-        135deg,
-        #fff7ed,
-        #fffbeb
-    );
-
-}
-
-
-.session-winner-badge {
-
-    display:inline-block;
-
-    margin-bottom:5px;
-
-    padding:4px 9px;
-
-    border-radius:20px;
-
-    background:#f59e0b;
-
-    color:#fff;
-
-    font-size:10px;
-
-    font-weight:700;
-
-}
-
-
-.no-session-data {
-
-    padding:18px;
-
-    text-align:center;
-
-    color:#64748b;
-
-    background:#f8fafc;
-
-    border-radius:10px;
-
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media(max-width:600px) {
-
-    .leaderboard-header-row {
-
-        gap:12px;
-
-    }
-
-
-    .live-scoreboard-btn {
-
-        padding:10px 15px;
-
-        font-size:12px;
-
-    }
-
-
-    .leaderboard-content {
-
-        margin-top:25px;
-
-    }
-
-
-    .leaderboard-card {
-
-        padding:15px;
-
-    }
-
-
-    .leaderboard-card .row {
-
-        grid-template-columns:
-        42px 1fr auto;
-
-        gap:8px;
-
-    }
-
-
-    .leaderboard-card .name {
-
-        font-size:16px;
-
-    }
-
-
-    .leaderboard-card .score {
-
-        font-size:16px;
-
-    }
-
-
-    .search {
-
-        flex-direction:column;
-
-    }
-
-
-    .search button {
-
-        width:100%;
-
-    }
-
-
-    .session-score-row {
-
-        grid-template-columns:
-        40px 1fr auto;
-
-        gap:8px;
-
-        padding:13px 12px;
-
-    }
-
-
-    .session-score-name {
-
-        font-size:15px;
-
-    }
-
-
-    .session-score-points {
-
-        font-size:15px;
-
-    }
-
-
-    input:focus,
-    select:focus,
-    textarea:focus {
-
-        background:#fff !important;
-
-    }
-
-}
-
-</style>
-
-
-<section class="idxsponsorship bg-white leaderboard-page">
-
-<div class="container" id="leaderboard">
-
-
-    <!-- LOGO -->
-
-    <div class="d-block mx-auto mb-xxl-4 mb-3 text-center">
-
-        <img
-        src="images/logos/techsabha_logo_black.svg"
-        alt="Technology Sabha"
-        class="img-fluid d-block mx-auto"
-        width="260">
+      <div id="teams">
+        Loading...
+      </div>
 
     </div>
 
 
-    <!-- TITLE -->
+    <!-- =======================================================
+         INDIVIDUAL TOP 5
+    ======================================================= -->
 
-    <div class="row justify-content-center">
+    <div class="card">
 
-        <div class="col-md-12">
+      <h2>
+        👤 Top 5 Individuals
+      </h2>
 
-            <div class="partnerheader text-center">
-
-                <div class="leaderboard-header-row">
-
-                    <h2
-                    class="page-title text-uppercase"
-                    style="font-weight:700;">
-
-                        Leaderboard 2026
-
-                    </h2>
-
-                </div>
-
-
-                <a
-                href="#"
-                class="button bg_blue border-0 text-white live-scoreboard-btn">
-
-                    <span class="live-dot"></span>
-
-                    Live Scoreboard
-
-                </a>
-
-
-                <p
-                class="font_figtree text-center mb-3 text-black fw-normal">
-
-                    India Ascending:
-                    From Digital Infrastructure
-                    to Intelligent Governance
-
-                </p>
-
-            </div>
-
-        </div>
+      <div id="top5">
+        Loading...
+      </div>
 
     </div>
 
 
-    <div class="leaderboard-content">
-
-
-        <!-- =================================================
-             SEARCH URN
-        ================================================= -->
-
-        <div class="leaderboard-card">
-
-            <h2>
-                🔎 Search Your URN
-            </h2>
-
-
-            <div class="search">
-
-                <input
-                id="urn"
-                placeholder="Enter your URN">
-
-
-                <button
-                onclick="searchURN()">
-
-                    GET TO KNOW YOUR SCORE
-
-                </button>
-
-            </div>
-
-
-            <div id="result"></div>
-
-        </div>
-
-
-        <!-- =================================================
-             FASTEST TO ENTER
-        ================================================= -->
-
-        <div class="leaderboard-card">
-
-            <h2>
-                ⚡ Fastest to Enter
-            </h2>
-
-
-            <div id="fastest">
-
-                Loading...
-
-            </div>
-
-        </div>
-
-
-        <!-- =================================================
-             TEAM LEADERBOARD
-        ================================================= -->
-
-        <div class="leaderboard-card">
-
-            <h2>
-                🏆 Team Leaderboard
-            </h2>
-
-
-            <div id="teams">
-
-                Loading...
-
-            </div>
-
-        </div>
-
-
-        <!-- =================================================
-             TOP 5 INDIVIDUALS
-        ================================================= -->
-
-        <div class="leaderboard-card">
-
-            <h2>
-                👤 Top 5 Individuals
-            </h2>
-
-
-            <div id="top5">
-
-                Loading...
-
-            </div>
-
-        </div>
-
-
-        <!-- =================================================
-             SESSION SCORES
-        ================================================= -->
-
-        <div class="leaderboard-card">
-
-            <h2>
-                🏅 Session Scores
-            </h2>
-
-
-            <div class="session-select-wrap">
-
-                <label
-                class="session-select-label"
-                for="sessionSelect">
-
-                    Select Session
-
-                </label>
-
-
-                <select
-                id="sessionSelect"
-                class="session-select"
-                onchange="showSelectedSession()">
-
-                    <option value="">
-
-                        Loading Sessions...
-
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div id="sessionScores">
-
-                Loading...
-
-            </div>
-
-        </div>
-
-
-        <div
-        id="updated"
-        class="updated">
-        </div>
-
+    <!-- =======================================================
+         SESSION WINNERS
+    ======================================================= -->
+
+    <div class="card">
+
+      <h2>
+        🏅 Session Winners
+      </h2>
+
+      <div id="sessions">
+        Loading...
+      </div>
 
     </div>
 
-</div>
 
-</section>
-
-
-<?php include "footer.php"; ?>
-
-
-<script>
+    <div
+      id="updated"
+      class="updated"
+    ></div>
 
 
-// =========================================================
-// GOOGLE APPS SCRIPT API
-// =========================================================
-
-const API =
-"https://script.google.com/macros/s/AKfycbzwwmgZ-p416-if5QORnTZLURHCLyX23qiDvcjMAKsyo54zNWWt4ilbFr1YgGxecBBeXw/exec";
+  </div>
 
 
-let allIndividuals = [];
-
-let allSessions = [];
+  <script>
 
 
-// =========================================================
-// HELPERS
-// =========================================================
+    // =========================================================
+    // GOOGLE APPS SCRIPT API
+    // =========================================================
 
-function escapeHTML(value) {
-
-    return String(value ?? "")
-
-        .replace(/&/g,"&amp;")
-
-        .replace(/</g,"&lt;")
-
-        .replace(/>/g,"&gt;")
-
-        .replace(/"/g,"&quot;")
-
-        .replace(/'/g,"&#039;");
-
-}
+    const API =
+      "https://script.google.com/macros/s/AKfycbzwwmgZ-p416-if5QORnTZLURHCLyX23qiDvcjMAKsyo54zNWWt4ilbFr1YgGxecBBeXw/exec";
 
 
-function numberValue(value) {
+    let allIndividuals = [];
 
-    const n =
-    Number(
+
+    // =========================================================
+    // HELPERS
+    // =========================================================
+
+    function escapeHTML(value) {
+
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    function numberValue(value) {
+
+      const n = Number(
         String(value ?? "")
-        .replace(/,/g,"")
+          .replace(/,/g, "")
+          .trim()
+      );
+
+      return isNaN(n) ? 0 : n;
+
+    }
+
+
+    function formatPoints(value) {
+
+      return numberValue(value)
+        .toLocaleString("en-IN");
+
+    }
+
+
+    // =========================================================
+    // TEAM NORMALIZER
+    //
+    // Handles:
+    //
+    // Green
+    // green
+    // GREEN
+    // Team Green
+    // team green
+    // Green Team
+    // TEAM GREEN
+    //
+    // Also allows colour values to match team values.
+    // =========================================================
+
+    function normalizeTeam(value) {
+
+      return String(value || "")
         .trim()
-    );
+        .toLowerCase()
+
+        .replace(/^team\s+/i, "")
+
+        .replace(/\s+team$/i, "")
+
+        .replace(/\s+/g, " ")
+
+        .trim();
+
+    }
 
 
-    return isNaN(n)
-        ? 0
-        : n;
+    // =========================================================
+    // LOAD SCOREBOARD
+    // =========================================================
 
-}
+    function loadScoreboard() {
 
-
-function formatPoints(value) {
-
-    return numberValue(value)
-        .toLocaleString();
-
-}
-
-
-// =========================================================
-// LOAD SCOREBOARD
-// =========================================================
-
-function loadScoreboard() {
-
-    fetch(
+      fetch(
         API +
         "?t=" +
         Date.now()
-    )
+      )
 
-    .then(function(response) {
+      .then(function(response) {
 
         if (!response.ok) {
 
-            throw new Error(
-                "API error"
-            );
+          throw new Error(
+            "API error: " +
+            response.status
+          );
 
         }
 
-
         return response.json();
 
-    })
+      })
+
+      .then(function(data) {
+
+        console.log(
+          "Scoreboard API data:",
+          data
+        );
 
 
-    .then(function(data) {
+        // -----------------------------------------------------
+        // STORE ALL INDIVIDUALS
+        // -----------------------------------------------------
 
         allIndividuals =
-        data.allIndividuals || [];
+          Array.isArray(data.allIndividuals)
+            ? data.allIndividuals
+            : [];
 
 
-        allSessions =
-        data.sessions || [];
-
+        // -----------------------------------------------------
+        // RENDER SECTIONS
+        // -----------------------------------------------------
 
         renderFastest(
-            data.fastest || []
+          Array.isArray(data.fastest)
+            ? data.fastest
+            : []
         );
 
 
         renderTeams(
-            data.teams || []
+          Array.isArray(data.teams)
+            ? data.teams
+            : []
         );
 
 
         renderIndividuals(
-            data.individuals || []
+          Array.isArray(data.individuals)
+            ? data.individuals
+            : []
         );
 
 
-        renderSessionDropdown(
-            allSessions
+        renderSessions(
+          Array.isArray(data.sessions)
+            ? data.sessions
+            : []
         );
 
 
         document.getElementById(
-            "updated"
+          "updated"
         ).innerText =
-        "Last updated: " +
-        new Date()
-        .toLocaleTimeString();
+          "Last updated: " +
+          new Date()
+            .toLocaleTimeString();
 
-    })
+      })
 
+      .catch(function(error) {
 
-    .catch(function(error) {
-
-        console.error(error);
+        console.error(
+          "Scoreboard error:",
+          error
+        );
 
 
         document.getElementById(
-            "fastest"
+          "fastest"
         ).innerHTML =
-        `<div class="error">
+          `<div class="error">
             Unable to load fastest-to-enter data.
-        </div>`;
+          </div>`;
 
 
         document.getElementById(
-            "teams"
+          "teams"
         ).innerHTML =
-        `<div class="error">
+          `<div class="error">
             Unable to load team leaderboard.
-        </div>`;
+          </div>`;
 
 
         document.getElementById(
-            "top5"
+          "top5"
         ).innerHTML =
-        `<div class="error">
+          `<div class="error">
             Unable to load individual leaderboard.
-        </div>`;
+          </div>`;
 
 
         document.getElementById(
-            "sessionScores"
+          "sessions"
         ).innerHTML =
-        `<div class="error">
-            Unable to load session scores.
-        </div>`;
+          `<div class="error">
+            Unable to load session winners.
+          </div>`;
 
-    });
-
-}
-
-
-// =========================================================
-// FASTEST TO ENTER
-// =========================================================
-
-function renderFastest(fastest) {
-
-    const container =
-    document.getElementById(
-        "fastest"
-    );
-
-
-    if (!fastest.length) {
-
-        container.innerHTML =
-        `<div class="error">
-            No fastest-to-enter data available.
-        </div>`;
-
-        return;
+      });
 
     }
 
 
-    container.innerHTML =
-    fastest.map(function(item) {
+    // =========================================================
+    // FASTEST TO ENTER
+    // =========================================================
 
-        return `
+    function renderFastest(fastest) {
 
-            <div class="fastest">
+      const container =
+        document.getElementById(
+          "fastest"
+        );
+
+
+      if (!fastest.length) {
+
+        container.innerHTML =
+          `<div class="error">
+            No fastest-to-enter data available.
+          </div>`;
+
+        return;
+
+      }
+
+
+      container.innerHTML =
+        fastest
+          .map(function(item) {
+
+            return `
+
+              <div class="fastest">
 
                 <div class="fastest-title">
 
-                    🏆
-                    ${escapeHTML(item.slot)}
-                    Winner
+                  🏆
+                  ${escapeHTML(item.slot)}
+                  Winner
 
                 </div>
 
 
                 <div class="fastest-body">
 
-                    <div class="fastest-name">
+                  <div class="fastest-name">
 
-                        ${escapeHTML(item.name)}
+                    ${escapeHTML(item.name)}
 
-                    </div>
-
-
-                    <div class="fastest-info">
-
-                        URN:
-                        <strong>
-                            ${escapeHTML(item.urn)}
-                        </strong>
-
-                        ${
-                            item.team
-                            ? `
-                                &nbsp; · &nbsp;
-                                Team:
-                                <strong>
-                                    ${escapeHTML(item.team)}
-                                </strong>
-                            `
-                            : ""
-                        }
-
-                    </div>
+                  </div>
 
 
-                    <div class="fastest-time">
+                  <div class="fastest-info">
 
-                        ⏱
-                        ${escapeHTML(item.time)}
+                    URN:
+                    <strong>
+                      ${escapeHTML(item.urn)}
+                    </strong>
 
-                    </div>
+                    ${
+                      item.team
+                        ? `
+                          &nbsp; · &nbsp;
+                          Team:
+                          <strong>
+                            ${escapeHTML(item.team)}
+                          </strong>
+                        `
+                        : ""
+                    }
+
+                  </div>
+
+
+                  <div class="fastest-time">
+
+                    ⏱
+                    ${escapeHTML(item.time)}
+
+                  </div>
 
                 </div>
 
-            </div>
+              </div>
 
-        `;
+            `;
 
-    }).join("");
+          })
+          .join("");
 
-}
-
-
-// =========================================================
-// TEAM LEADERBOARD
-// =========================================================
-
-function renderTeams(teams) {
-
-    const container =
-    document.getElementById(
-        "teams"
-    );
+    }
 
 
-    if (!teams.length) {
+    // =========================================================
+    // TEAM LEADERBOARD
+    //
+    // IMPORTANT FIX:
+    //
+    // Your API currently returns:
+    //
+    // team leaderboard:
+    // Green = 48900
+    //
+    // BUT individual records contain:
+    //
+    // team: ""
+    // colour: "Green"
+    //
+    // Therefore:
+    //
+    // 1. Try person.team
+    // 2. If empty, use person.colour
+    //
+    // This allows the correct members to appear.
+    // =========================================================
+
+    function renderTeams(teams) {
+
+      const container =
+        document.getElementById(
+          "teams"
+        );
+
+
+      if (!teams.length) {
 
         container.innerHTML =
-        `<div class="error">
+          `<div class="error">
             No team scores available.
-        </div>`;
+          </div>`;
 
         return;
 
-    }
+      }
 
 
-    teams.sort(function(a,b) {
+      // -------------------------------------------------------
+      // SORT TEAMS HIGHEST TO LOWEST
+      // -------------------------------------------------------
 
-        return numberValue(b.score)
-             - numberValue(a.score);
+      teams.sort(function(a, b) {
 
-    });
+        return (
+          numberValue(b.score) -
+          numberValue(a.score)
+        );
 
-
-    container.innerHTML =
-    teams.slice(0,10)
-    .map(function(team,index) {
-
-        const rank =
-        index + 1;
+      });
 
 
-        const medal =
-        rank === 1
-        ? "🏆"
-        : "";
+      // -------------------------------------------------------
+      // CREATE TEAM BLOCKS
+      // -------------------------------------------------------
+
+      container.innerHTML =
+        teams
+          .slice(0, 10)
+          .map(function(team, index) {
+
+            const rank =
+              index + 1;
 
 
-        return `
+            // -------------------------------------------------
+            // NORMALIZED TEAM NAME
+            // -------------------------------------------------
 
-            <div class="row">
-
-                <div class="rank">
-
-                    ${rank}
-
-                </div>
+            const normalizedTeam =
+              normalizeTeam(team.team);
 
 
-                <div>
+            // -------------------------------------------------
+            // FIND TEAM MEMBERS
+            //
+            // First:
+            // person.team
+            //
+            // If person.team is empty:
+            // person.colour
+            // -------------------------------------------------
 
-                    <div class="name">
+            const members =
+              allIndividuals
 
-                        ${
-                            medal
-                            ? `
-                                <span class="medal">
-                                    ${medal}
-                                </span>
-                            `
-                            : ""
-                        }
+                .filter(function(person) {
 
-                        Team
-                        ${escapeHTML(team.team)}
+                  const personTeam =
+                    normalizeTeam(
+                      person.team
+                    );
+
+
+                  const personColour =
+                    normalizeTeam(
+                      person.colour
+                    );
+
+
+                  // If the API has a team value,
+                  // use it.
+
+                  if (personTeam) {
+
+                    return (
+                      personTeam ===
+                      normalizedTeam
+                    );
+
+                  }
+
+
+                  // Otherwise use colour.
+                  //
+                  // Your current API has:
+                  //
+                  // team: ""
+                  // colour: "Green"
+                  //
+                  // so this is what makes
+                  // Team Green expand correctly.
+
+                  return (
+                    personColour ===
+                    normalizedTeam
+                  );
+
+                })
+
+
+                .sort(function(a, b) {
+
+                  return (
+                    numberValue(b.score) -
+                    numberValue(a.score)
+                  );
+
+                });
+
+
+            // -------------------------------------------------
+            // MEDALS
+            // -------------------------------------------------
+
+            let medal = "";
+
+
+            if (rank === 1) {
+
+              medal = "🥇";
+
+            } else if (rank === 2) {
+
+              medal = "🥈";
+
+            } else if (rank === 3) {
+
+              medal = "🥉";
+
+            }
+
+
+            // -------------------------------------------------
+            // MEMBER HTML
+            // -------------------------------------------------
+
+            let membersHTML = "";
+
+
+            if (members.length > 0) {
+
+              membersHTML =
+                members
+
+                  .map(function(
+                    person,
+                    memberIndex
+                  ) {
+
+                    return `
+
+                      <div class="team-member">
+
+                        <div>
+
+                          <div class="team-member-name">
+
+                            <span class="team-member-rank">
+
+                              ${memberIndex + 1}.
+
+                            </span>
+
+                            ${escapeHTML(
+                              person.name ||
+                              "Unknown"
+                            )}
+
+                          </div>
+
+
+                          <div class="team-member-info">
+
+                            ${
+                              person.urn
+                                ? `
+                                  URN:
+                                  <strong>
+                                    ${escapeHTML(
+                                      person.urn
+                                    )}
+                                  </strong>
+                                `
+                                : ""
+                            }
+
+
+                            ${
+                              person.company
+                                ? `
+                                  &nbsp; · &nbsp;
+                                  ${escapeHTML(
+                                    person.company
+                                  )}
+                                `
+                                : ""
+                            }
+
+
+                            ${
+                              person.designation
+                                ? `
+                                  &nbsp; · &nbsp;
+                                  ${escapeHTML(
+                                    person.designation
+                                  )}
+                                `
+                                : ""
+                            }
+
+                          </div>
+
+                        </div>
+
+
+                        <div class="team-member-score">
+
+                          ${formatPoints(
+                            person.score
+                          )}
+
+                          pts
+
+                        </div>
+
+                      </div>
+
+                    `;
+
+                  })
+
+                  .join("");
+
+            } else {
+
+              membersHTML = `
+
+                <div class="team-member">
+
+                  <div>
+
+                    <div class="team-member-name">
+
+                      No members found for this team.
 
                     </div>
 
+                    <div class="team-member-info">
+
+                      Team:
+                      ${escapeHTML(team.team)}
+
+                    </div>
+
+                  </div>
+
                 </div>
 
+              `;
 
-                <div class="score">
-
-                    ${formatPoints(team.score)}
-                    pts
-
-                </div>
-
-            </div>
-
-        `;
-
-    })
-    .join("");
-
-}
+            }
 
 
-// =========================================================
-// TOP 5 INDIVIDUALS
-// =========================================================
+            // -------------------------------------------------
+            // TEAM BLOCK
+            // -------------------------------------------------
 
-function renderIndividuals(individuals) {
+            return `
 
-    const container =
-    document.getElementById(
-        "top5"
-    );
+              <div class="team-container">
 
+                <div
+                  class="team-row"
+                  onclick="toggleTeam(${index})"
+                  id="team-row-${index}"
+                >
 
-    if (!individuals.length) {
-
-        container.innerHTML =
-        `<div class="error">
-            No individual scores available.
-        </div>`;
-
-        return;
-
-    }
-
-
-    individuals.sort(function(a,b) {
-
-        return numberValue(b.score)
-             - numberValue(a.score);
-
-    });
-
-
-    const top5 =
-    individuals.slice(0,5);
-
-
-    container.innerHTML =
-    top5.map(function(person,index) {
-
-        const rank =
-        index + 1;
-
-
-        let medal = "";
-
-
-        if(rank === 1) {
-
-            medal = "🥇";
-
-        }
-
-        else if(rank === 2) {
-
-            medal = "🥈";
-
-        }
-
-        else if(rank === 3) {
-
-            medal = "🥉";
-
-        }
-
-
-        return `
-
-            <div class="row">
-
-                <div class="rank">
+                  <div class="
+                    rank
+                    ${rank === 1 ? "rank-one" : ""}
+                  ">
 
                     ${rank}
 
-                </div>
+                  </div>
 
 
-                <div>
+                  <div>
 
                     <div class="name">
 
-                        ${
-                            medal
-                            ? `
-                                <span class="medal">
-                                    ${medal}
-                                </span>
-                            `
-                            : ""
-                        }
+                      ${
+                        medal
+                          ? `
+                            <span class="medal">
+                              ${medal}
+                            </span>
+                          `
+                          : ""
+                      }
 
-                        ${escapeHTML(person.name)}
+                      Team
+                      ${escapeHTML(team.team)}
+
+                      <span
+                        class="team-arrow"
+                        id="team-arrow-${index}"
+                      >
+                        ▶
+                      </span>
 
                     </div>
 
 
                     <div class="sub">
 
-                        URN:
-                        ${escapeHTML(person.urn)}
+                      ${members.length}
+
+                      ${
+                        members.length === 1
+                          ? " Member"
+                          : " Members"
+                      }
+
+                      · Click to view members
 
                     </div>
+
+                  </div>
+
+
+                  <div class="score">
+
+                    ${formatPoints(
+                      team.score
+                    )}
+
+                    pts
+
+                  </div>
+
+                </div>
+
+
+                <div
+                  class="team-members"
+                  id="team-members-${index}"
+                >
+
+                  ${membersHTML}
+
+                </div>
+
+              </div>
+
+            `;
+
+          })
+          .join("");
+
+    }
+
+
+    // =========================================================
+    // TOGGLE TEAM MEMBERS
+    // =========================================================
+
+    function toggleTeam(index) {
+
+      const row =
+        document.getElementById(
+          "team-row-" + index
+        );
+
+
+      const members =
+        document.getElementById(
+          "team-members-" + index
+        );
+
+
+      if (!row || !members) {
+
+        return;
+
+      }
+
+
+      row.classList.toggle("open");
+
+      members.classList.toggle("open");
+
+    }
+
+
+    // =========================================================
+    // TOP 5 INDIVIDUALS
+    // =========================================================
+
+    function renderIndividuals(individuals) {
+
+      const container =
+        document.getElementById(
+          "top5"
+        );
+
+
+      if (!individuals.length) {
+
+        container.innerHTML =
+          `<div class="error">
+            No individual scores available.
+          </div>`;
+
+        return;
+
+      }
+
+
+      individuals.sort(function(a, b) {
+
+        return (
+          numberValue(b.score) -
+          numberValue(a.score)
+        );
+
+      });
+
+
+      const top5 =
+        individuals.slice(0, 5);
+
+
+      container.innerHTML =
+        top5
+          .map(function(person, index) {
+
+            const rank =
+              index + 1;
+
+
+            let medal = "";
+
+
+            if (rank === 1) {
+
+              medal = "🥇";
+
+            } else if (rank === 2) {
+
+              medal = "🥈";
+
+            } else if (rank === 3) {
+
+              medal = "🥉";
+
+            }
+
+
+            return `
+
+              <div class="row">
+
+                <div class="
+                  rank
+                  ${rank === 1 ? "rank-one" : ""}
+                ">
+
+                  ${rank}
+
+                </div>
+
+
+                <div>
+
+                  <div class="name">
+
+                    ${
+                      medal
+                        ? `
+                          <span class="medal">
+                            ${medal}
+                          </span>
+                        `
+                        : ""
+                    }
+
+                    ${escapeHTML(
+                      person.name
+                    )}
+
+                  </div>
+
+
+                  <div class="sub">
+
+                    URN:
+                    ${escapeHTML(
+                      person.urn
+                    )}
+
+                  </div>
 
                 </div>
 
 
                 <div class="score">
 
-                    ${formatPoints(person.score)}
-                    pts
+                  ${formatPoints(
+                    person.score
+                  )}
+
+                  pts
 
                 </div>
 
-            </div>
+              </div>
 
-        `;
+            `;
 
-    })
-    .join("");
+          })
+          .join("");
 
-}
-
-
-// =========================================================
-// SESSION DROPDOWN
-// =========================================================
-
-function renderSessionDropdown(sessions) {
-
-    const select =
-    document.getElementById(
-        "sessionSelect"
-    );
+    }
 
 
-    if(!sessions.length) {
+    // =========================================================
+    // SESSION WINNERS
+    // =========================================================
 
-        select.innerHTML =
-        `<option value="">
-            No Sessions Available
-        </option>`;
+    function renderSessions(sessions) {
 
-
+      const container =
         document.getElementById(
-            "sessionScores"
-        ).innerHTML =
-        `<div class="no-session-data">
-            No session data available.
-        </div>`;
-
-        return;
-
-    }
+          "sessions"
+        );
 
 
-    /*
-     * Latest session first.
-     */
-
-    sessions.sort(function(a,b) {
-
-        return numberValue(b.session)
-             - numberValue(a.session);
-
-    });
-
-
-    select.innerHTML =
-    sessions.map(function(session) {
-
-        return `
-
-            <option value="${escapeHTML(session.session)}">
-
-                Session
-                ${escapeHTML(session.session)}
-
-            </option>
-
-        `;
-
-    }).join("");
-
-
-    /*
-     * Automatically display latest session.
-     */
-
-    select.value =
-    sessions[0].session;
-
-
-    showSelectedSession();
-
-}
-
-
-// =========================================================
-// SHOW SELECTED SESSION
-// =========================================================
-
-function showSelectedSession() {
-
-    const select =
-    document.getElementById(
-        "sessionSelect"
-    );
-
-
-    const selectedSession =
-    String(select.value);
-
-
-    const container =
-    document.getElementById(
-        "sessionScores"
-    );
-
-
-    const session =
-    allSessions.find(function(item) {
-
-        return String(item.session)
-        === selectedSession;
-
-    });
-
-
-    if(!session) {
+      if (!sessions.length) {
 
         container.innerHTML =
-        `<div class="no-session-data">
-            No data available for this session.
-        </div>`;
+          `<div class="error">
+            No session winners available.
+          </div>`;
 
         return;
 
-    }
+      }
 
 
-    const people = [];
+      sessions.sort(function(a, b) {
+
+        return (
+          numberValue(b.session) -
+          numberValue(a.session)
+        );
+
+      });
 
 
-    /*
-     * Winner
-     */
+      container.innerHTML =
+        sessions
+          .map(function(session) {
 
-    if(session.winner) {
-
-        people.push({
-
-            ...session.winner,
-
-            isWinner:true
-
-        });
-
-    }
+            const winner =
+              session.winner;
 
 
-    /*
-     * Close finishers
-     */
+            if (!winner) {
 
-    if(
-        Array.isArray(
-            session.closeFinishers
-        )
-    ) {
+              return "";
 
-        session.closeFinishers
-        .forEach(function(person) {
-
-            people.push({
-
-                ...person,
-
-                isWinner:false
-
-            });
-
-        });
-
-    }
+            }
 
 
-    /*
-     * Sort highest points first.
-     */
-
-    people.sort(function(a,b) {
-
-        return numberValue(b.points)
-             - numberValue(a.points);
-
-    });
+            const closeFinishers =
+              session.closeFinishers || [];
 
 
-    if(!people.length) {
-
-        container.innerHTML =
-        `<div class="no-session-data">
-            No individual scores are available
-            for Session ${escapeHTML(selectedSession)}.
-        </div>`;
-
-        return;
-
-    }
+            let closeHTML = "";
 
 
-    container.innerHTML = `
+            if (closeFinishers.length) {
 
-        <div class="session-score-box">
+              closeHTML = `
 
-            <div class="session-score-header">
+                <div class="close-section">
 
-                Session
-                ${escapeHTML(selectedSession)}
-                — Individual Scores
+                  <div class="close-title">
 
-            </div>
+                    Also close in this session
 
-
-            ${
-                people.map(function(person,index) {
-
-                    const rank =
-                    index + 1;
+                  </div>
 
 
-                    let medal = "";
+                  ${
+                    closeFinishers
+                      .map(function(person) {
 
+                        return `
 
-                    if(rank === 1) {
-
-                        medal = "🥇";
-
-                    }
-
-                    else if(rank === 2) {
-
-                        medal = "🥈";
-
-                    }
-
-                    else if(rank === 3) {
-
-                        medal = "🥉";
-
-                    }
-
-
-                    return `
-
-                        <div class="
-                            session-score-row
-                            ${person.isWinner
-                            ? "session-winner-row"
-                            : ""}
-                        ">
-
-
-                            <div
-                            class="session-score-rank">
-
-                                ${rank}
-
-                            </div>
-
+                          <div class="close-person">
 
                             <div>
 
-                                ${
-                                    person.isWinner
-                                    ? `
-                                        <div
-                                        class="session-winner-badge">
+                              <span class="close-name">
 
-                                            🏆 WINNER
-
-                                        </div>
-                                    `
-                                    : ""
-                                }
-
-
-                                <div
-                                class="session-score-name">
-
-                                    ${
-                                        medal
-                                        ? `
-                                            <span class="medal">
-                                                ${medal}
-                                            </span>
-                                        `
-                                        : ""
-                                    }
-
-                                    ${escapeHTML(
-                                        person.name
-                                    )}
-
-                                </div>
-
-
-                                <div
-                                class="session-score-info">
-
-                                    URN:
-                                    <strong>
-                                        ${escapeHTML(
-                                            person.urn
-                                        )}
-                                    </strong>
-
-
-                                    ${
-                                        person.team
-                                        ? `
-                                            <br>
-                                            Team:
-                                            <strong>
-                                                ${escapeHTML(
-                                                    person.team
-                                                )}
-                                            </strong>
-                                        `
-                                        : ""
-                                    }
-
-
-                                    ${
-                                        person.time
-                                        ? `
-                                            <br>
-                                            ⏱
-                                            ${escapeHTML(
-                                                person.time
-                                            )}
-                                        `
-                                        : ""
-                                    }
-
-                                </div>
-
-                            </div>
-
-
-                            <div
-                            class="session-score-points">
-
-                                ${formatPoints(
-                                    person.points
+                                ${escapeHTML(
+                                  person.name
                                 )}
 
-                                pts
+                              </span>
+
+                              <br>
+
+                              <span>
+
+                                URN:
+                                ${escapeHTML(
+                                  person.urn
+                                )}
+
+                              </span>
 
                             </div>
 
-                        </div>
 
-                    `;
+                            <div class="close-info">
 
-                }).join("")
+                              ${
+                                person.time
+                                  ? "⏱ " +
+                                    escapeHTML(
+                                      person.time
+                                    )
+                                  : ""
+                              }
+
+                            </div>
+
+                          </div>
+
+                        `;
+
+                      })
+                      .join("")
+                  }
+
+                </div>
+
+              `;
+
             }
 
-        </div>
 
-    `;
+            return `
 
-}
+              <div class="session">
 
+                <div class="session-title">
 
-// =========================================================
-// SEARCH YOUR URN
-// =========================================================
+                  Session
+                  ${escapeHTML(
+                    session.session
+                  )}
 
-function searchURN() {
-
-    const input =
-    document.getElementById(
-        "urn"
-    );
+                </div>
 
 
-    const result =
-    document.getElementById(
-        "result"
-    );
+                <div class="session-winner">
+
+                  <div class="winner-label">
+
+                    🏆 WINNER
+
+                  </div>
 
 
-    const urn =
-    input.value
-    .trim()
-    .toUpperCase();
+                  <div class="winner-name">
+
+                    ${escapeHTML(
+                      winner.name
+                    )}
+
+                  </div>
 
 
-    if(!urn) {
+                  <div class="winner-details">
 
-        result.innerHTML =
-        `<div class="error">
+                    URN:
+                    <strong>
 
-            Please enter your URN.
+                      ${escapeHTML(
+                        winner.urn
+                      )}
 
-        </div>`;
+                    </strong>
 
-        return;
+
+                    <br>
+
+
+                    ${
+                      winner.team
+                        ? `
+                          Team:
+                          <strong>
+
+                            ${escapeHTML(
+                              winner.team
+                            )}
+
+                          </strong>
+
+                          <br>
+                        `
+                        : ""
+                    }
+
+
+                    ${
+                      winner.time
+                        ? `
+                          ⏱ Time:
+                          <strong>
+
+                            ${escapeHTML(
+                              winner.time
+                            )}
+
+                          </strong>
+                        `
+                        : ""
+                    }
+
+                  </div>
+
+
+                  <div class="winner-points">
+
+                    ${formatPoints(
+                      winner.points
+                    )}
+
+                    Points
+
+                  </div>
+
+                </div>
+
+
+                ${closeHTML}
+
+              </div>
+
+            `;
+
+          })
+          .join("");
 
     }
 
 
-    const person =
-    allIndividuals.find(
-        function(item) {
+    // =========================================================
+    // SEARCH YOUR URN
+    // =========================================================
 
-            return String(
-                item.urn || ""
-            )
-            .trim()
-            .toUpperCase()
-            === urn;
+    function searchURN() {
 
-        }
-    );
+      const input =
+        document.getElementById(
+          "urn"
+        );
 
 
-    if(!person) {
+      const result =
+        document.getElementById(
+          "result"
+        );
+
+
+      const urn =
+        input.value
+          .trim()
+          .toUpperCase();
+
+
+      if (!urn) {
 
         result.innerHTML =
-        `<div class="error">
+          `<div class="error">
+
+            Please enter your URN.
+
+          </div>`;
+
+        return;
+
+      }
+
+
+      const person =
+        allIndividuals.find(
+          function(item) {
+
+            return String(
+              item.urn || ""
+            )
+              .trim()
+              .toUpperCase()
+              === urn;
+
+          }
+        );
+
+
+      if (!person) {
+
+        result.innerHTML =
+          `<div class="error">
 
             URN
 
             <strong>
-                ${escapeHTML(urn)}
+              ${escapeHTML(urn)}
             </strong>
 
             was not found.
 
-        </div>`;
+          </div>`;
 
         return;
 
-    }
+      }
 
 
-    result.innerHTML = `
+      result.innerHTML = `
 
         <div class="result">
 
-            <h3>
-
-                ${escapeHTML(
-                    person.name
-                )}
-
-            </h3>
+          <h3>
+            Score Details
+          </h3>
 
 
-            <p>
+          <p>
 
-                <strong>
-                    URN:
-                </strong>
+            <strong>
+              URN:
+            </strong>
 
-                ${escapeHTML(
-                    person.urn
-                )}
+            ${escapeHTML(
+              person.urn
+            )}
 
-            </p>
-
-
-            ${
-                person.company
-                ? `
-                    <p>
-
-                        <strong>
-                            Company:
-                        </strong>
-
-                        ${escapeHTML(
-                            person.company
-                        )}
-
-                    </p>
-                `
-                : ""
-            }
+          </p>
 
 
-            ${
-                person.designation
-                ? `
-                    <p>
+          <p>
 
-                        <strong>
-                            Designation:
-                        </strong>
+            <strong>
+              Name:
+            </strong>
 
-                        ${escapeHTML(
-                            person.designation
-                        )}
+            ${escapeHTML(
+              person.name
+            )}
 
-                    </p>
-                `
-                : ""
-            }
+          </p>
 
 
-            ${
-                person.team
-                ? `
-                    <p>
+          <p>
 
-                        <strong>
-                            Team:
-                        </strong>
+            <strong>
+              Total Points:
+            </strong>
 
-                        ${escapeHTML(
-                            person.team
-                        )}
+            ${formatPoints(
+              person.score
+            )}
 
-                    </p>
-                `
-                : ""
-            }
+          </p>
 
 
-            <p>
+          <p>
 
-                <strong>
-                    Rank:
-                </strong>
+            <strong>
+              Company Name:
+            </strong>
 
-                #${escapeHTML(
-                    person.rank || "-"
-                )}
+            ${escapeHTML(
+              person.company || "-"
+            )}
 
-            </p>
+          </p>
 
 
-            <div class="result-score">
+          <p>
 
-                ${formatPoints(
-                    person.score
-                )}
+            <strong>
+              Team:
+            </strong>
 
-                Points
+            ${escapeHTML(
+              person.team ||
+              person.colour ||
+              "-"
+            )}
 
-            </div>
+          </p>
 
         </div>
 
-    `;
+      `;
 
-}
+    }
 
 
-// =========================================================
-// ENTER KEY FOR URN SEARCH
-// =========================================================
+    // =========================================================
+    // ENTER KEY FOR URN SEARCH
+    // =========================================================
 
-document
-.getElementById("urn")
-.addEventListener(
-    "keydown",
-    function(event) {
+    document
+      .getElementById("urn")
+      .addEventListener(
+        "keydown",
+        function(event) {
 
-        if(event.key === "Enter") {
+          if (
+            event.key === "Enter"
+          ) {
 
             searchURN();
 
+          }
+
         }
-
-    }
-);
+      );
 
 
-// =========================================================
-// INITIAL LOAD
-// =========================================================
+    // =========================================================
+    // INITIAL LOAD
+    // =========================================================
 
-loadScoreboard();
+    loadScoreboard();
 
 
-// =========================================================
-// AUTO REFRESH EVERY 10 SECONDS
-// =========================================================
+    // =========================================================
+    // AUTO REFRESH EVERY 10 SECONDS
+    // =========================================================
 
-setInterval(
-    loadScoreboard,
-    10000
-);
+    setInterval(
+      loadScoreboard,
+      10000
+    );
 
-</script>
+
+  </script>
 
 
 </body>
