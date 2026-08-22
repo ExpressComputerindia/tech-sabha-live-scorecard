@@ -340,6 +340,171 @@ body {
 
 
 /* =========================================================
+   EXPANDABLE TEAM LEADERBOARD
+========================================================= */
+
+.team-container {
+
+  border-bottom:
+    1px solid #e5e7eb;
+
+}
+
+
+.team-row {
+
+  display: grid;
+
+  grid-template-columns:
+    55px
+    1fr
+    auto;
+
+  gap: 15px;
+
+  align-items: center;
+
+  padding: 15px 5px;
+
+  cursor: pointer;
+
+  transition:
+    background .2s ease;
+
+  border-radius: 10px;
+
+}
+
+
+.team-row:hover {
+
+  background: #f8fafc;
+
+}
+
+
+.team-arrow {
+
+  display: inline-block;
+
+  margin-left: 8px;
+
+  font-size: 13px;
+
+  color: #64748b;
+
+  transition:
+    transform .2s ease;
+
+}
+
+
+.team-row.open .team-arrow {
+
+  transform:
+    rotate(90deg);
+
+}
+
+
+.team-members {
+
+  display: none;
+
+  margin:
+    0 0 12px 55px;
+
+  border-left:
+    3px solid #e2e8f0;
+
+  border-radius: 4px;
+
+  overflow: hidden;
+
+}
+
+
+.team-members.open {
+
+  display: block;
+
+}
+
+
+.team-member {
+
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    auto;
+
+  gap: 10px;
+
+  align-items: center;
+
+  padding:
+    11px 15px;
+
+  background:
+    #f8fafc;
+
+  border-bottom:
+    1px solid #e2e8f0;
+
+}
+
+
+.team-member:last-child {
+
+  border-bottom: 0;
+
+}
+
+
+.team-member-name {
+
+  font-size: 14px;
+
+  font-weight: bold;
+
+}
+
+
+.team-member-info {
+
+  margin-top: 4px;
+
+  color: #64748b;
+
+  font-size: 12px;
+
+  line-height: 1.4;
+
+}
+
+
+.team-member-score {
+
+  font-size: 14px;
+
+  font-weight: bold;
+
+  white-space: nowrap;
+
+}
+
+
+.team-member-rank {
+
+  color: #94a3b8;
+
+  margin-right: 6px;
+
+}
+
+
+/* =========================================================
    SESSIONS
 ========================================================= */
 
@@ -695,6 +860,51 @@ button:hover {
 
   }
 
+
+  .team-row {
+
+    grid-template-columns:
+      42px
+      1fr
+      auto;
+
+    gap: 8px;
+
+  }
+
+
+  .team-members {
+
+    margin-left: 42px;
+
+  }
+
+
+  .team-member {
+
+    grid-template-columns:
+      1fr
+      auto;
+
+    padding:
+      10px;
+
+  }
+
+
+  .team-member-name {
+
+    font-size: 13px;
+
+  }
+
+
+  .team-member-score {
+
+    font-size: 13px;
+
+  }
+
 }
 
 </style>
@@ -732,6 +942,7 @@ button:hover {
 
 
 <div class="wrap">
+
 
 <!-- =======================================================
      SEARCH URN
@@ -863,11 +1074,11 @@ function escapeHTML(value) {
   return String(
     value ?? ""
   )
-  .replace(/&/g, "&amp;")
-  .replace(/</g, "&lt;")
-  .replace(/>/g, "&gt;")
-  .replace(/"/g, "&quot;")
-  .replace(/'/g, "&#039;");
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 
 }
 
@@ -1032,7 +1243,6 @@ function renderFastest(fastest) {
 
             🏆
             ${escapeHTML(item.slot)}
-
             Winner
 
           </div>
@@ -1056,14 +1266,14 @@ function renderFastest(fastest) {
 
               ${
                 item.team
-                  ? `
-                    &nbsp; · &nbsp;
-                    Team:
-                    <strong>
-                      ${escapeHTML(item.team)}
-                    </strong>
-                  `
-                  : ""
+                ? `
+                  &nbsp; · &nbsp;
+                  Team:
+                  <strong>
+                    ${escapeHTML(item.team)}
+                  </strong>
+                `
+                : ""
               }
 
             </div>
@@ -1089,6 +1299,7 @@ function renderFastest(fastest) {
 
 // =========================================================
 // TEAM LEADERBOARD
+// EXPANDABLE MEMBERS
 // =========================================================
 
 function renderTeams(teams) {
@@ -1111,6 +1322,10 @@ function renderTeams(teams) {
   }
 
 
+  // -------------------------------------------------------
+  // SORT TEAMS BY SCORE
+  // -------------------------------------------------------
+
   teams.sort(function(a, b) {
 
     return (
@@ -1121,6 +1336,10 @@ function renderTeams(teams) {
   });
 
 
+  // -------------------------------------------------------
+  // CREATE TEAM BLOCKS
+  // -------------------------------------------------------
+
   container.innerHTML =
     teams
       .slice(0, 10)
@@ -1130,63 +1349,231 @@ function renderTeams(teams) {
           index + 1;
 
 
-        const medal =
-          rank === 1
-            ? "🏆"
-            : "";
+        // ---------------------------------------------------
+        // FIND MEMBERS OF THIS TEAM
+        // ---------------------------------------------------
 
+        const members =
+          allIndividuals
+            .filter(function(person) {
+
+              return String(
+                person.team || ""
+              )
+                .trim()
+                .toLowerCase()
+                ===
+                String(
+                  team.team || ""
+                )
+                  .trim()
+                  .toLowerCase();
+
+            })
+            .sort(function(a, b) {
+
+              return (
+                numberValue(b.score) -
+                numberValue(a.score)
+              );
+
+            });
+
+
+        // ---------------------------------------------------
+        // MEDALS
+        // ---------------------------------------------------
+
+        let medal = "";
+
+        if (rank === 1) {
+
+          medal = "🥇";
+
+        } else if (rank === 2) {
+
+          medal = "🥈";
+
+        } else if (rank === 3) {
+
+          medal = "🥉";
+
+        }
+
+
+        // ---------------------------------------------------
+        // MEMBER HTML
+        // ---------------------------------------------------
+
+        let membersHTML = "";
+
+
+        if (members.length) {
+
+          membersHTML =
+            members
+              .map(function(person, memberIndex) {
+
+                return `
+
+                  <div class="team-member">
+
+                    <div>
+
+                      <div class="team-member-name">
+
+                        <span class="team-member-rank">
+                          ${memberIndex + 1}.
+                        </span>
+
+                        ${escapeHTML(
+                          person.name || "Unknown"
+                        )}
+
+                      </div>
+
+                      <div class="team-member-info">
+
+                        ${
+                          person.urn
+                            ? "URN: " +
+                              escapeHTML(person.urn)
+                            : ""
+                        }
+
+                        ${
+                          person.company
+                            ? " · " +
+                              escapeHTML(person.company)
+                            : ""
+                        }
+
+                      </div>
+
+                    </div>
+
+
+                    <div class="team-member-score">
+
+                      ${formatPoints(
+                        person.score
+                      )}
+
+                      pts
+
+                    </div>
+
+                  </div>
+
+                `;
+
+              })
+              .join("");
+
+        } else {
+
+          membersHTML = `
+
+            <div class="team-member">
+
+              <div class="team-member-name">
+
+                No individual scores available.
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+
+
+        // ---------------------------------------------------
+        // TEAM BLOCK
+        // ---------------------------------------------------
 
         return `
 
-          <div class="row">
+          <div class="team-container">
 
-            <div class="
-              rank
-              ${rank === 1 ? "rank-one" : ""}
-            ">
+            <div
+              class="team-row"
+              onclick="toggleTeam(${index})"
+              id="team-row-${index}"
+            >
 
-              ${rank}
+              <div class="
+                rank
+                ${rank === 1 ? "rank-one" : ""}
+              ">
 
-            </div>
+                ${rank}
+
+              </div>
 
 
-            <div>
+              <div>
 
-              <div class="name">
+                <div class="name">
 
-                ${
-                  medal
-                    ? `
-                      <span class="medal">
-                        ${medal}
-                      </span>
-                    `
-                    : ""
-                }
+                  ${
+                    medal
+                      ? `
+                        <span class="medal">
+                          ${medal}
+                        </span>
+                      `
+                      : ""
+                  }
 
-                Team ${escapeHTML(
-                  team.team
+                  Team ${escapeHTML(
+                    team.team
+                  )}
+
+                  <span
+                    class="team-arrow"
+                    id="team-arrow-${index}"
+                  >
+                    ▶
+                  </span>
+
+                </div>
+
+
+                <div class="sub">
+
+                  ${members.length}
+                  ${
+                    members.length === 1
+                      ? "Member"
+                      : "Members"
+                  }
+
+                </div>
+
+              </div>
+
+
+              <div class="score">
+
+                ${formatPoints(
+                  team.score
                 )}
 
-              </div>
-
-
-              <div class="sub">
-
-                Team
+                pts
 
               </div>
 
             </div>
 
 
-            <div class="score">
+            <div
+              class="team-members"
+              id="team-members-${index}"
+            >
 
-              ${formatPoints(
-                team.score
-              )}
-
-              pts
+              ${membersHTML}
 
             </div>
 
@@ -1196,6 +1583,38 @@ function renderTeams(teams) {
 
       })
       .join("");
+
+}
+
+
+// =========================================================
+// TOGGLE TEAM MEMBERS
+// =========================================================
+
+function toggleTeam(index) {
+
+  const row =
+    document.getElementById(
+      "team-row-" + index
+    );
+
+
+  const members =
+    document.getElementById(
+      "team-members-" + index
+    );
+
+
+  if (!row || !members) {
+
+    return;
+
+  }
+
+
+  row.classList.toggle("open");
+
+  members.classList.toggle("open");
 
 }
 
@@ -1612,8 +2031,9 @@ function searchURN() {
         return String(
           item.urn || ""
         )
-        .trim()
-        .toUpperCase() === urn;
+          .trim()
+          .toUpperCase()
+          === urn;
 
       }
     );
